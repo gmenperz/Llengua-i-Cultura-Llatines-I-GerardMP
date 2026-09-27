@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tabula Completa — omple tot el paradigma</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus+SC&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    box-sizing: border-box;
+    --bg: #2E1B3D; --bg-panel: #3B2350; --bg-panel-2: #34204A;
+    --ink: #F3E8F0; --ink-soft: #C9AACD;
+    --red: #E8C468; --red-dark: #C9A23F;
+    --bronze: #D8AC4E; --bronze-light: #E9C877; --patina: #8CB49A;
+    --line: rgba(239,231,214,0.22); --line-soft: rgba(239,231,214,0.12); --shadow: rgba(0,0,0,0.55);
+    --ok: #8CB49A; --bad: #D06B5C;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1A1420; --bg-panel: #241C2C; --bg-panel-2: #2C2236;
+      --ink: #EFE7D6; --ink-soft: #C7B99E;
+      --red: #B47FC7; --red-dark: #8F5DA3;
+      --bronze: #D8AC4E; --bronze-light: #E9C877; --patina: #8CB49A;
+      --line: rgba(239,231,214,0.22); --line-soft: rgba(239,231,214,0.12);
+      --shadow: rgba(0,0,0,0.55); --ok: #8CB49A; --bad: #D06B5C;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1A1420; --bg-panel: #241C2C; --bg-panel-2: #2C2236;
+    --ink: #EFE7D6; --ink-soft: #C7B99E;
+    --red: #B47FC7; --red-dark: #8F5DA3;
+    --bronze: #D8AC4E; --bronze-light: #E9C877; --patina: #8CB49A;
+    --line: rgba(239,231,214,0.22); --line-soft: rgba(239,231,214,0.12);
+    --shadow: rgba(0,0,0,0.55); --ok: #8CB49A; --bad: #D06B5C;
+  }
+  html, body { height: 100%; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg);
+    background-image: radial-gradient(circle at 15% 20%, rgba(43,33,24,0.05) 0%, transparent 45%),
+                       radial-gradient(circle at 85% 75%, rgba(43,33,24,0.05) 0%, transparent 45%);
+    color: var(--ink); font-family: 'EB Garamond', Georgia, serif; font-size: 18px; line-height: 1.5;
+    min-height: 100%; display: flex; justify-content: center; padding: 28px 16px 40px;
+  }
+  .display { font-family: 'Marcellus SC', Georgia, serif; letter-spacing: 0.04em; }
+  .wrap { width: 100%; max-width: 720px; }
+
+  header.top { text-align: center; margin-bottom: 18px; }
+  header.top h1 { font-size: clamp(24px, 6vw, 36px); margin: 0 0 6px; font-weight: 600; }
+  header.top .rule { width: 120px; height: 3px; margin: 10px auto 12px; background: linear-gradient(90deg, transparent, var(--bronze), transparent); }
+  header.top p.sub { margin: 0; color: var(--ink-soft); font-size: 16px; font-style: italic; }
+
+  .tabs { display:flex; gap: 8px; justify-content: center; margin-bottom: 16px; }
+  .tabs button {
+    font-family:'Marcellus SC', serif; font-size: 13px; padding: 9px 16px; border-radius: 8px;
+    border: 1px solid var(--line); background: var(--bg-panel); color: var(--ink-soft); cursor: pointer;
+  }
+  .tabs button.active { background: var(--red); border-color: var(--red); color: #F4EEDF; }
+
+  .panel {
+    background: var(--bg-panel); border: 1px solid var(--line); border-radius: 14px;
+    padding: 22px; box-shadow: 0 10px 24px -14px var(--shadow); position: relative;
+  }
+  .panel::before, .panel::after { content:''; position:absolute; width:14px; height:14px; border:2px solid var(--line); opacity:.6; }
+  .panel::before { top:8px; left:8px; border-right:none; border-bottom:none; }
+  .panel::after { bottom:8px; right:8px; border-left:none; border-top:none; }
+
+  .statbar {
+    display:flex; justify-content: space-between; font-family:'Marcellus SC', serif; font-size: 13px;
+    color: var(--ink-soft); margin-bottom: 16px; flex-wrap: wrap; gap: 8px;
+  }
+  .statbar .val { color: var(--red); font-weight: 700; }
+
+  .word-head { text-align:center; margin-bottom: 16px; }
+  .word-head .w { font-family:'Marcellus SC', serif; font-size: clamp(22px,5vw,28px); color: var(--red); margin: 0 0 4px; }
+  .word-head .g { color: var(--ink-soft); font-style: italic; margin: 0; }
+
+  table.pgrid { width: 100%; border-collapse: collapse; }
+  table.pgrid th, table.pgrid td { padding: 6px; text-align: center; }
+  table.pgrid th { font-family:'Marcellus SC', serif; font-size: 12px; color: var(--ink-soft); font-weight: 600; }
+  table.pgrid td.lbl { font-family:'Marcellus SC', serif; font-size: 13px; color: var(--ink-soft); text-align: right; padding-right: 10px; white-space: nowrap; }
+  table.pgrid input {
+    width: 100%; font-family:'EB Garamond', serif; font-size: 16px; padding: 7px 8px;
+    border-radius: 6px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); text-align: center;
+  }
+  table.pgrid input.correct { background: var(--ok); border-color: var(--ok); color: #F4EEDF; }
+  table.pgrid input.wrong { background: var(--bad); border-color: var(--bad); color: #F4EEDF; }
+
+  .verb-list { display:flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+  .verb-row { display:grid; grid-template-columns: 130px 1fr; align-items: center; gap: 10px; }
+  .verb-row label { font-family:'Marcellus SC', serif; font-size: 13px; color: var(--ink-soft); }
+
+  .answer-notes { margin-top: 10px; font-size: 14px; color: var(--ink-soft); text-align: center; min-height: 20px; }
+
+  .btn-row { display:flex; justify-content: center; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+  button.check {
+    font-family:'Marcellus SC', serif; font-size: 13px; letter-spacing: .03em; background: var(--patina);
+    color: #F4EEDF; border: none; padding: 11px 22px; border-radius: 8px; cursor: pointer;
+  }
+  button.next {
+    font-family:'Marcellus SC', serif; font-size: 13px; letter-spacing: .03em; background: transparent;
+    border: 1px solid var(--bronze); color: var(--bronze); padding: 10px 20px; border-radius: 8px; cursor: pointer;
+  }
+  button.next:hover { background: var(--bronze); color: var(--bg-panel); }
+  button.check:hover { filter: brightness(1.08); }
+
+  footer.foot { text-align:center; margin-top: 20px; color: var(--ink-soft); font-size: 13px; font-style: italic; }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1 class="display">TABULA COMPLETA</h1>
+    <div class="rule"></div>
+    <p class="sub">omple tot el paradigma d'una sola vegada</p>
+  </header>
+
+  <div class="tabs" id="tabs">
+    <button data-mode="declension" class="active">Declinació</button>
+    <button data-mode="conjugation">Conjugació</button>
+  </div>
+
+  <section class="panel" id="panel"></section>
+  <footer class="foot" id="foot">Perfectes: 0 · Cel·les correctes: 0 / 0</footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var VOCAB = [
+    {lat:"rosa", cat:"rosa", g:"f"}, {lat:"puella", cat:"noia", g:"f"}, {lat:"terra", cat:"terra", g:"f"},
+    {lat:"aqua", cat:"aigua", g:"f"}, {lat:"vita", cat:"vida", g:"f"}, {lat:"via", cat:"camí", g:"f"},
+    {lat:"insula", cat:"illa", g:"f"}, {lat:"silva", cat:"bosc", g:"f"}, {lat:"patria", cat:"pàtria", g:"f"},
+    {lat:"femina", cat:"dona", g:"f"}, {lat:"nauta", cat:"mariner", g:"m"}, {lat:"poeta", cat:"poeta", g:"m"},
+    {lat:"regina", cat:"reina", g:"f"}, {lat:"villa", cat:"casa de camp", g:"f"}, {lat:"epistula", cat:"carta", g:"f"},
+    {lat:"corona", cat:"corona", g:"f"}, {lat:"luna", cat:"lluna", g:"f"}, {lat:"stella", cat:"estrella", g:"f"},
+    {lat:"agricola", cat:"pagès", g:"m"}, {lat:"schola", cat:"escola", g:"f"}, {lat:"umbra", cat:"ombra", g:"f"}
+  ];
+
+  var CASES = [
+    {key:"nom", label:"Nominatiu", sg:"a", pl:"ae"},
+    {key:"voc", label:"Vocatiu", sg:"a", pl:"ae"},
+    {key:"acc", label:"Acusatiu", sg:"am", pl:"as"},
+    {key:"gen", label:"Genitiu", sg:"ae", pl:"arum"},
+    {key:"dat", label:"Datiu", sg:"ae", pl:"is"},
+    {key:"abl", label:"Ablatiu", sg:"a", pl:"is"}
+  ];
+
+  var PERSONS = ["jo","tu","ell / ella","nosaltres","vosaltres","ells / elles"];
+
+  var VERBS = [
+    {inf:"amare", meaning:"estimar", forms:["amo","amas","amat","amamus","amatis","amant"]},
+    {inf:"laudare", meaning:"lloar", forms:["laudo","laudas","laudat","laudamus","laudatis","laudant"]},
+    {inf:"portare", meaning:"portar", forms:["porto","portas","portat","portamus","portatis","portant"]},
+    {inf:"habere", meaning:"tenir", forms:["habeo","habes","habet","habemus","habetis","habent"]},
+    {inf:"videre", meaning:"veure", forms:["video","vides","videt","videmus","videtis","vident"]},
+    {inf:"monere", meaning:"avisar", forms:["moneo","mones","monet","monemus","monetis","monent"]},
+    {inf:"mittere", meaning:"enviar", forms:["mitto","mittis","mittit","mittimus","mittitis","mittunt"]},
+    {inf:"legere", meaning:"llegir", forms:["lego","legis","legit","legimus","legitis","legunt"]},
+    {inf:"dicere", meaning:"dir", forms:["dico","dicis","dicit","dicimus","dicitis","dicunt"]},
+    {inf:"capere", meaning:"agafar", forms:["capio","capis","capit","capimus","capitis","capiunt"]},
+    {inf:"facere", meaning:"fer", forms:["facio","facis","facit","facimus","facitis","faciunt"]},
+    {inf:"audire", meaning:"escoltar", forms:["audio","audis","audit","audimus","auditis","audiunt"]},
+    {inf:"venire", meaning:"venir", forms:["venio","venis","venit","venimus","venitis","veniunt"]},
+    {inf:"dormire", meaning:"dormir", forms:["dormio","dormis","dormit","dormimus","dormitis","dormiunt"]},
+    {inf:"esse", meaning:"ser, estar", forms:["sum","es","est","sumus","estis","sunt"]}
+  ];
+
+  var panel = document.getElementById("panel");
+  var tabs = document.getElementById("tabs");
+  var foot = document.getElementById("foot");
+
+  var stats = { perfect: 0, correctCells: 0, totalCells: 0 };
+  var mode = "declension";
+  var current = null;
+  var checked = false;
+
+  function rand(a){ return a[Math.floor(Math.random()*a.length)]; }
+  function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+  function norm(s){ return String(s).trim().toLowerCase(); }
+
+  function updateFoot(){
+    foot.textContent = "Perfectes: " + stats.perfect + " · Cel·les correctes: " + stats.correctCells + " / " + stats.totalCells;
+  }
+
+  tabs.addEventListener("click", function(e){
+    var b = e.target.closest("button[data-mode]");
+    if (!b) return;
+    mode = b.dataset.mode;
+    Array.prototype.forEach.call(tabs.querySelectorAll("button"), function(x){ x.classList.toggle("active", x===b); });
+    nextWord();
+  });
+
+  function nextWord(){
+    checked = false;
+    if (mode === "declension"){
+      current = { type:"declension", word: rand(VOCAB) };
+    } else {
+      current = { type:"conjugation", verb: rand(VERBS) };
+    }
+    render();
+  }
+
+  function render(){
+    var html = "";
+    if (current.type === "declension"){
+      var w = current.word;
+      var stem = w.lat.slice(0,-1);
+      html += '<div class="word-head"><p class="w">' + escapeHtml(w.lat) + ', ' + escapeHtml(stem) + 'ae</p><p class="g">(' + w.g + '.) ' + escapeHtml(w.cat) + '</p></div>';
+      html += '<table class="pgrid"><tr><th></th><th>Singular</th><th>Plural</th></tr>';
+      CASES.forEach(function(c){
+        html += '<tr><td class="lbl">' + c.label + '</td>';
+        html += '<td><input type="text" autocomplete="off" autocapitalize="off" spellcheck="false" data-case="' + c.key + '" data-num="sg"></td>';
+        html += '<td><input type="text" autocomplete="off" autocapitalize="off" spellcheck="false" data-case="' + c.key + '" data-num="pl"></td></tr>';
+      });
+      html += '</table>';
+    } else {
+      var v = current.verb;
+      html += '<div class="word-head"><p class="w">' + escapeHtml(v.forms[0]) + ', ' + escapeHtml(v.inf) + '</p><p class="g">' + escapeHtml(v.meaning) + '</p></div>';
+      html += '<div class="verb-list">';
+      PERSONS.forEach(function(p, i){
+        html += '<div class="verb-row"><label>' + p + '</label><input type="text" autocomplete="off" autocapitalize="off" spellcheck="false" data-person="' + i + '"></div>';
+      });
+      html += '</div>';
+    }
+    html += '<div class="answer-notes" id="notes"></div>';
+    html += '<div class="btn-row">';
+    html += '<button class="check" id="checkBtn">Comprova el paradigma</button>';
+    html += '<button class="next" id="nextBtn" style="display:none;">Paraula següent</button>';
+    html += '</div>';
+
+    panel.innerHTML = html;
+    document.getElementById("checkBtn").addEventListener("click", checkAll);
+    document.getElementById("nextBtn").addEventListener("click", nextWord);
+    var firstInput = panel.querySelector("input");
+    if (firstInput) firstInput.focus();
+  }
+
+  function checkAll(){
+    if (checked) return;
+    checked = true;
+    var inputs = panel.querySelectorAll("input");
+    var allCorrect = true;
+    var wrongList = [];
+
+    inputs.forEach(function(inp){
+      var expected;
+      if (current.type === "declension"){
+        var w = current.word;
+        var stem = w.lat.slice(0,-1);
+        var c = CASES.find(function(x){ return x.key === inp.dataset.case; });
+        expected = stem + (inp.dataset.num === "sg" ? c.sg : c.pl);
+      } else {
+        var idx = parseInt(inp.dataset.person,10);
+        expected = current.verb.forms[idx];
+      }
+      var ok = norm(inp.value) === norm(expected);
+      inp.classList.add(ok ? "correct" : "wrong");
+      inp.disabled = true;
+      stats.totalCells += 1;
+      if (ok) stats.correctCells += 1;
+      else { allCorrect = false; wrongList.push(expected); }
+    });
+
+    if (allCorrect) stats.perfect += 1;
+    updateFoot();
+
+    var notes = document.getElementById("notes");
+    if (allCorrect){
+      notes.textContent = "Perfecte — tot el paradigma correcte!";
+      notes.style.color = "var(--ok)";
+    } else {
+      notes.textContent = "Formes correctes que faltaven: " + wrongList.join(", ");
+      notes.style.color = "var(--bad)";
+    }
+
+    document.getElementById("checkBtn").style.display = "none";
+    document.getElementById("nextBtn").style.display = "inline-block";
+    document.getElementById("nextBtn").focus();
+  }
+
+  updateFoot();
+  nextWord();
+})();
+</script>
+</body>
+</html>

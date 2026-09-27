@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Llengua i Cultura Llatines I — Unitat 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus+SC&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    box-sizing: border-box;
+    --bg: #2E1B3D; --bg-panel: #3B2350; --bg-panel-2: #34204A;
+    --ink: #F3E8F0; --ink-soft: #C9AACD;
+    --red: #E8C468; --red-dark: #C9A23F;
+    --bronze: #D8AC4E; --patina: #8CB49A;
+    --line: rgba(239,231,214,0.22); --line-soft: rgba(239,231,214,0.12); --shadow: rgba(0,0,0,0.55);
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1A1420; --bg-panel: #241C2C; --bg-panel-2: #2C2236;
+      --ink: #EFE7D6; --ink-soft: #C7B99E;
+      --red: #B47FC7; --red-dark: #8F5DA3; --bronze: #D8AC4E; --patina: #8CB49A;
+      --line: rgba(239,231,214,0.22); --line-soft: rgba(239,231,214,0.12); --shadow: rgba(0,0,0,0.55);
+    }
+  }
+  html, body { height: 100%; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg);
+    background-image: radial-gradient(circle at 15% 20%, rgba(43,33,24,0.05) 0%, transparent 45%),
+                       radial-gradient(circle at 85% 75%, rgba(43,33,24,0.05) 0%, transparent 45%);
+    color: var(--ink); font-family: 'EB Garamond', Georgia, serif; font-size: 18px; line-height: 1.5;
+    min-height: 100%; display: flex; justify-content: center; padding: 28px 16px 40px;
+  }
+  .display { font-family: 'Marcellus SC', Georgia, serif; letter-spacing: 0.04em; }
+  .wrap { width: 100%; max-width: 680px; }
+
+  a.back { display:block; text-align:center; margin-bottom: 18px; font-family:'Marcellus SC',serif; font-size:12px; letter-spacing:0.03em; color: var(--ink-soft); text-decoration:none; }
+
+  header.top { text-align: center; margin-bottom: 20px; }
+  header.top .unit-label { text-transform: uppercase; letter-spacing: 0.08em; font-size: 13px; color: var(--ink-soft); margin: 0 0 4px; }
+  header.top h1 { font-size: clamp(24px, 6vw, 36px); margin: 0 0 6px; font-weight: 600; }
+  header.top .rule { width: 120px; height: 3px; margin: 10px auto 12px; background: linear-gradient(90deg, transparent, var(--bronze), transparent); }
+  header.top p.sub { margin: 0; color: var(--ink-soft); font-size: 16px; font-style: italic; }
+
+  .game-list { display: flex; flex-direction: column; gap: 14px; margin-top: 26px; }
+  a.game-card {
+    display: block; text-align: left; text-decoration: none; color: var(--ink);
+    background: var(--bg-panel); border: 1px solid var(--line); border-radius: 12px;
+    padding: 18px 20px; box-shadow: 0 8px 18px -12px var(--shadow); transition: border-color .15s, transform .15s;
+  }
+  a.game-card:hover { border-color: var(--bronze); transform: translateY(-2px); }
+  a.game-card h2 { font-family: 'Marcellus SC', serif; font-size: 17px; margin: 0 0 6px; color: var(--red); }
+  a.game-card p { margin: 0; color: var(--ink-soft); font-size: 15px; }
+
+  footer.foot { text-align:center; margin-top: 30px; color: var(--ink-soft); font-size: 13px; font-style: italic; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../index.html">← Totes les unitats</a>
+  <header class="top">
+    <p class="unit-label">Unitat 1</p>
+    <h1 class="display">PRIMA DECLINATIO</h1>
+    <div class="rule"></div>
+    <p class="sub">primera declinació, present d'indicatiu, etimologia i sintaxi</p>
+  </header>
+
+  <div class="game-list">
+    <a class="game-card" href="via-latina.html">
+      <h2>Via Latina</h2>
+      <p>Preguntes ràpides de declinació, conjugació i vocabulari, amb punts, ratxa i vides.</p>
+    </a>
+    <a class="game-card" href="memoria-latina.html">
+      <h2>Memoria Latina</h2>
+      <p>Joc de parelles: relaciona cada mot llatí amb el seu significat en català.</p>
+    </a>
+    <a class="game-card" href="tabula-completa.html">
+      <h2>Tabula Completa</h2>
+      <p>Omple d'un cop tot el paradigma d'un nom o d'un verb en present d'indicatiu.</p>
+    </a>
+    <a class="game-card" href="origo-verborum.html">
+      <h2>Origo Verborum</h2>
+      <p>Substrat, superstrat, adstrat, mots patrimonials i cultismes — d'on venen els mots del català.</p>
+    </a>
+    <a class="game-card" href="syntaxis-latina.html">
+      <h2>Syntaxis Latina</h2>
+      <p>Anàlisi morfosintàctica d'oracions llatines i traducció al català.</p>
+    </a>
+  </div>
+
+  <footer class="foot">Verba iungere, sensum invenire.</footer>
+</div>
+</body>
+</html>

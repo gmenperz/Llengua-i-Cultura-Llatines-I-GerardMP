@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Llengua i Cultura Llatines I — Institut La Mitjana</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus+SC&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    box-sizing: border-box;
+    --bg: #2E1B3D; --bg-panel: #3B2350; --bg-panel-2: #34204A;
+    --ink: #F3E8F0; --ink-soft: #C9AACD;
+    --red: #E8C468; --red-dark: #C9A23F;
+    --bronze: #D8AC4E; --patina: #8CB49A;
+    --line: rgba(239,231,214,0.22); --line-soft: rgba(239,231,214,0.12); --shadow: rgba(0,0,0,0.55);
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1A1420; --bg-panel: #241C2C; --bg-panel-2: #2C2236;
+      --ink: #EFE7D6; --ink-soft: #C7B99E;
+      --red: #B47FC7; --red-dark: #8F5DA3; --bronze: #D8AC4E; --patina: #8CB49A;
+      --line: rgba(239,231,214,0.22); --line-soft: rgba(239,231,214,0.12); --shadow: rgba(0,0,0,0.55);
+    }
+  }
+  html, body { height: 100%; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg);
+    background-image: radial-gradient(circle at 15% 20%, rgba(43,33,24,0.05) 0%, transparent 45%),
+                       radial-gradient(circle at 85% 75%, rgba(43,33,24,0.05) 0%, transparent 45%);
+    color: var(--ink); font-family: 'EB Garamond', Georgia, serif; font-size: 18px; line-height: 1.5;
+    min-height: 100%; display: flex; justify-content: center; padding: 40px 16px;
+  }
+  .display { font-family: 'Marcellus SC', Georgia, serif; letter-spacing: 0.04em; }
+  .wrap { width: 100%; max-width: 660px; text-align: center; }
+  h1 { font-size: clamp(24px, 6.4vw, 38px); margin: 0 0 6px; font-weight: 600; }
+  .rule { width: 120px; height: 3px; margin: 12px auto 14px; background: linear-gradient(90deg, transparent, var(--bronze), transparent); }
+  p.sub { color: var(--ink-soft); font-style: italic; margin: 0; }
+  p.meta { color: var(--ink-soft); font-size: 15px; margin: 6px 0 34px; }
+
+  .unit-list { display: flex; flex-direction: column; gap: 14px; text-align: left; }
+  a.unit-card {
+    display: block; text-decoration: none; color: var(--ink);
+    background: var(--bg-panel); border: 1px solid var(--line); border-radius: 12px;
+    padding: 20px 22px; box-shadow: 0 8px 18px -12px var(--shadow); transition: border-color .15s, transform .15s;
+  }
+  a.unit-card:hover { border-color: var(--bronze); transform: translateY(-2px); }
+  a.unit-card .num { font-family:'Marcellus SC', serif; font-size: 12px; color: var(--bronze); letter-spacing: 0.06em; text-transform: uppercase; }
+  a.unit-card h2 { font-family: 'Marcellus SC', serif; font-size: 19px; margin: 4px 0 8px; color: var(--red); }
+  a.unit-card p { margin: 0; color: var(--ink-soft); font-size: 15px; }
+
+  .unit-card.placeholder { opacity: 0.55; cursor: default; }
+  .unit-card.placeholder:hover { border-color: var(--line); transform: none; }
+
+  footer { margin-top: 34px; color: var(--ink-soft); font-size: 13px; font-style: italic; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1 class="display">LLENGUA I CULTURA LLATINES I</h1>
+  <div class="rule"></div>
+  <p class="sub">materials i jocs de pràctica</p>
+  <p class="meta">1r de Batxillerat · curs 2026-2027 · Institut La Mitjana</p>
+
+  <div class="unit-list">
+    <a class="unit-card" href="unitat1/index.html">
+      <div class="num">Unitat 1</div>
+      <h2>Prima declinatio</h2>
+      <p>Declinació, conjugació, vocabulari, etimologia i anàlisi morfosintàctica.</p>
+    </a>
+    <div class="unit-card placeholder">
+      <div class="num">Properament</div>
+      <h2>Unitat 2</h2>
+      <p>Encara no publicada.</p>
+    </div>
+  </div>
+
+  <footer>Gerard Méndez</footer>
+</div>
+</body>
+</html>

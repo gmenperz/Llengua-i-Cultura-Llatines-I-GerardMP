@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Origo Verborum — estrats i doblets del català</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus+SC&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    box-sizing: border-box;
+    --bg: #2E1B3D; --bg-panel: #3B2350; --bg-panel-2: #34204A;
+    --ink: #F3E8F0; --ink-soft: #C9AACD;
+    --red: #E8C468; --red-dark: #C9A23F;
+    --bronze: #D8AC4E; --bronze-light: #E9C877; --patina: #8CB49A;
+    --line: rgba(239,231,214,0.22); --line-soft: rgba(239,231,214,0.12); --shadow: rgba(0,0,0,0.55);
+    --ok: #8CB49A; --bad: #D06B5C;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1A1420; --bg-panel: #241C2C; --bg-panel-2: #2C2236;
+      --ink: #EFE7D6; --ink-soft: #C7B99E;
+      --red: #B47FC7; --red-dark: #8F5DA3;
+      --bronze: #D8AC4E; --bronze-light: #E9C877; --patina: #8CB49A;
+      --line: rgba(239,231,214,0.22); --line-soft: rgba(239,231,214,0.12);
+      --shadow: rgba(0,0,0,0.55); --ok: #8CB49A; --bad: #D06B5C;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1A1420; --bg-panel: #241C2C; --bg-panel-2: #2C2236;
+    --ink: #EFE7D6; --ink-soft: #C7B99E;
+    --red: #B47FC7; --red-dark: #8F5DA3;
+    --bronze: #D8AC4E; --bronze-light: #E9C877; --patina: #8CB49A;
+    --line: rgba(239,231,214,0.22); --line-soft: rgba(239,231,214,0.12);
+    --shadow: rgba(0,0,0,0.55); --ok: #8CB49A; --bad: #D06B5C;
+  }
+  html, body { height: 100%; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg);
+    background-image: radial-gradient(circle at 15% 20%, rgba(43,33,24,0.05) 0%, transparent 45%),
+                       radial-gradient(circle at 85% 75%, rgba(43,33,24,0.05) 0%, transparent 45%);
+    color: var(--ink); font-family: 'EB Garamond', Georgia, serif; font-size: 18px; line-height: 1.5;
+    min-height: 100%; display: flex; justify-content: center; padding: 28px 16px 40px;
+  }
+  .display { font-family: 'Marcellus SC', Georgia, serif; letter-spacing: 0.04em; }
+  .wrap { width: 100%; max-width: 720px; }
+
+  header.top { text-align: center; margin-bottom: 20px; }
+  header.top h1 { font-size: clamp(24px, 6vw, 36px); margin: 0 0 6px; font-weight: 600; }
+  header.top .rule { width: 120px; height: 3px; margin: 10px auto 12px; background: linear-gradient(90deg, transparent, var(--bronze), transparent); }
+  header.top p.sub { margin: 0; color: var(--ink-soft); font-size: 16px; font-style: italic; }
+
+  nav.modes { display:flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 18px; }
+  nav.modes button {
+    font-family:'Marcellus SC', serif; font-size: 12.5px; letter-spacing: 0.02em; padding: 9px 13px;
+    border-radius: 8px; border: 1px solid var(--line); background: var(--bg-panel); color: var(--ink-soft); cursor: pointer;
+  }
+  nav.modes button:hover { border-color: var(--bronze); color: var(--ink); }
+  nav.modes button.active { background: var(--red); border-color: var(--red); color: #F4EEDF; }
+
+  .panel {
+    background: var(--bg-panel); border: 1px solid var(--line); border-radius: 14px;
+    padding: 22px; box-shadow: 0 10px 24px -14px var(--shadow); position: relative;
+  }
+  .panel::before, .panel::after { content:''; position:absolute; width:14px; height:14px; border:2px solid var(--line); opacity:.6; }
+  .panel::before { top:8px; left:8px; border-right:none; border-bottom:none; }
+  .panel::after { bottom:8px; right:8px; border-left:none; border-top:none; }
+
+  .statbar {
+    display:flex; justify-content: space-between; align-items:center; font-family:'Marcellus SC', serif; font-size: 13px;
+    color: var(--ink-soft); margin-bottom: 16px; flex-wrap: wrap; gap: 8px;
+  }
+  .statbar .coins { letter-spacing:3px; color: var(--bronze); font-size:16px; }
+  .statbar .score-val { color: var(--red); font-weight: 700; }
+  .statbar .streak-val { color: var(--patina); font-weight: 700; }
+
+  .intro-stage { text-align:center; padding: 26px 6px; color: var(--ink-soft); }
+  .intro-stage h2 { font-family:'Marcellus SC', serif; color: var(--ink); font-size: 19px; margin-bottom: 10px; }
+
+  .question-card {
+    background: var(--bg-panel-2); border: 1px solid var(--line-soft); border-radius: 10px;
+    padding: 20px; text-align: center; margin-bottom: 18px;
+  }
+  .question-card .word { font-family:'Marcellus SC', serif; font-size: clamp(24px,6vw,32px); color: var(--red); margin: 0 0 8px; }
+  .question-card .sub2 { color: var(--ink-soft); font-style: italic; margin: 0; font-size: 15px; }
+  .question-card .ask { font-size: 18px; font-weight: 600; margin-top: 10px; }
+
+  .options-grid { display:grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .options-grid.three { grid-template-columns: 1fr; }
+  @media (max-width: 480px) { .options-grid { grid-template-columns: 1fr; } }
+  .options-grid button {
+    font-family:'EB Garamond', serif; font-size: 17px; padding: 13px 14px; border-radius: 8px;
+    border: 1px solid var(--line); background: var(--bg); color: var(--ink); cursor: pointer;
+  }
+  .options-grid button:hover:not(:disabled) { border-color: var(--bronze); }
+  .options-grid button.correct { background: var(--ok); border-color: var(--ok); color: #F4EEDF; }
+  .options-grid button.wrong { background: var(--bad); border-color: var(--bad); color: #F4EEDF; }
+  .options-grid button:disabled { cursor: default; }
+
+  .feedback { min-height: 20px; font-weight: 600; font-size: 16px; text-align:center; margin-top: 14px; }
+  .feedback.ok { color: var(--ok); } .feedback.bad { color: var(--bad); }
+  .explain { margin-top: 8px; color: var(--ink-soft); font-size: 15px; font-style: italic; text-align:center; }
+
+  .next-row { display:flex; justify-content:center; margin-top: 16px; }
+  button.next {
+    font-family:'Marcellus SC', serif; font-size: 13px; padding: 10px 22px; border-radius: 8px;
+    border: 1px solid var(--bronze); background: transparent; color: var(--bronze); cursor: pointer;
+  }
+  button.next:hover { background: var(--bronze); color: var(--bg-panel); }
+
+  .gameover { text-align:center; padding: 20px 8px; }
+  .gameover h2 { font-family:'Marcellus SC', serif; color: var(--red); font-size: 22px; margin-bottom: 6px; }
+  .gameover .final-score { font-size: 19px; margin: 10px 0 4px; }
+  .gameover .high { color: var(--ink-soft); font-size: 14px; margin-bottom: 16px; }
+  .gameover button { font-family:'Marcellus SC', serif; font-size: 13px; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin: 0 6px; }
+  .gameover button.restart { background: var(--red); border:none; color: #F4EEDF; }
+  .gameover button.menu { background: transparent; border: 1px solid var(--line); color: var(--ink-soft); }
+
+  .ref-block { margin-bottom: 20px; }
+  .ref-block h3 { font-family:'Marcellus SC', serif; font-size: 15px; color: var(--red); margin: 0 0 6px; }
+  .ref-block p { margin: 0 0 6px; color: var(--ink); }
+  .ref-examples { color: var(--ink-soft); font-size: 15px; font-style: italic; }
+  .ref-table { width:100%; border-collapse: collapse; margin: 6px 0 18px; font-size: 15px; }
+  .ref-table th, .ref-table td { border: 1px solid var(--line-soft); padding: 6px 9px; text-align:left; }
+  .ref-table th { background: var(--bg-panel-2); font-family:'Marcellus SC', serif; font-size: 12px; }
+
+  footer.foot { text-align:center; margin-top: 20px; color: var(--ink-soft); font-size: 13px; font-style: italic; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1 class="display">ORIGO VERBORUM</h1>
+    <div class="rule"></div>
+    <p class="sub">d'on venen els mots del català — estrats, mots patrimonials i cultismes</p>
+  </header>
+
+  <nav class="modes" id="modeNav">
+    <button data-mode="strata">Estrats</button>
+    <button data-mode="doublets">Patrimonials i cultismes</button>
+    <button data-mode="mixed">Repte mixt</button>
+    <button data-mode="reference">Referència</button>
+  </nav>
+
+  <section class="panel">
+    <div id="statbar" class="statbar" style="display:none;">
+      <div>Punts: <span class="score-val" id="scoreVal">0</span></div>
+      <div>Ratxa: <span class="streak-val" id="streakVal">0</span></div>
+      <div>Vides: <span class="coins" id="livesVal">●●●</span></div>
+    </div>
+    <div class="stage" id="stage">
+      <div class="intro-stage">
+        <h2>Tria una modalitat per començar</h2>
+        <p>Estrats treballa el substrat, el superstrat i l'adstrat; Patrimonials i cultismes treballa els doblets lèxics. Consulta la Referència si primer vols repassar-ho.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">Verba manent — les paraules guarden la seva pròpia història.</footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var STRATA_INFO = {
+    substrat: { label: "Substrat preromà", note: "és una paraula heretada de les llengües que es parlaven a la península abans del llatí (ibèric, basc...); el llatí s'hi va imposar, però en va absorbir algun mot." },
+    superstrat: { label: "Superstrat germànic", note: "prové dels pobles germànics (visigots, francs) que es van imposar políticament als territoris romanitzats; la seva llengua no va sobreviure, però hi va deixar vocabulari." },
+    adstrat: { label: "Adstrat àrab", note: "és un manlleu de l'àrab, llengua amb què el català va conviure segles sense que cap de les dues substituís l'altra." }
+  };
+
+  var STRATA_WORDS = [
+    {word:"esquerra", s:"substrat"}, {word:"conill", s:"substrat"}, {word:"balma", s:"substrat"},
+    {word:"tossal", s:"substrat"}, {word:"barranc", s:"substrat"}, {word:"samarra", s:"substrat"},
+    {word:"garriga", s:"substrat"}, {word:"morro", s:"substrat"},
+    {word:"guerra", s:"superstrat"}, {word:"guant", s:"superstrat"}, {word:"guardar", s:"superstrat"},
+    {word:"guaitar", s:"superstrat"}, {word:"blanc", s:"superstrat"}, {word:"blau", s:"superstrat"},
+    {word:"robar", s:"superstrat"}, {word:"bandera", s:"superstrat"}, {word:"esperó", s:"superstrat"},
+    {word:"guarnir", s:"superstrat"},
+    {word:"sucre", s:"adstrat"}, {word:"síndria", s:"adstrat"}, {word:"taronja", s:"adstrat"},
+    {word:"catifa", s:"adstrat"}, {word:"duana", s:"adstrat"}, {word:"magatzem", s:"adstrat"},
+    {word:"xarop", s:"adstrat"}, {word:"cotó", s:"adstrat"}, {word:"arròs", s:"adstrat"},
+    {word:"safata", s:"adstrat"}, {word:"albergínia", s:"adstrat"}, {word:"escacs", s:"adstrat"}
+  ];
+
+  var DOUBLETS = [
+    {etymon:"OCULUM", pat:"ull", cult:"ocular"},
+    {etymon:"AURICULA", pat:"orella", cult:"auricular"},
+    {etymon:"DIGITUM", pat:"dit", cult:"digital"},
+    {etymon:"FILIUM", pat:"fill", cult:"filial"},
+    {etymon:"NOCTEM", pat:"nit", cult:"nocturn"},
+    {etymon:"FRIGIDUM", pat:"fred", cult:"frígid"},
+    {etymon:"LACTEM", pat:"llet", cult:"làctic"},
+    {etymon:"PLENUM", pat:"ple", cult:"plenari"},
+    {etymon:"MATREM", pat:"mare", cult:"maternal"},
+    {etymon:"PATREM", pat:"pare", cult:"paternal"},
+    {etymon:"CORPUS", pat:"cos", cult:"corporal"},
+    {etymon:"TEMPUS", pat:"temps", cult:"temporal"},
+    {etymon:"POPULUM", pat:"poble", cult:"popular"},
+    {etymon:"INSULAM", pat:"illa", cult:"insular"},
+    {etymon:"ROTAM", pat:"roda", cult:"rotatori"},
+    {etymon:"SONUM", pat:"so", cult:"sonor"}
+  ];
+
+  var state = { mode:null, score:0, streak:0, lives:3, awaiting:false, current:null };
+
+  var stage = document.getElementById("stage");
+  var statbar = document.getElementById("statbar");
+  var scoreVal = document.getElementById("scoreVal");
+  var streakVal = document.getElementById("streakVal");
+  var livesVal = document.getElementById("livesVal");
+  var modeNav = document.getElementById("modeNav");
+
+  function rand(a){ return a[Math.floor(Math.random()*a.length)]; }
+  function shuffle(a){ var arr=a.slice(); for (var i=arr.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=arr[i]; arr[i]=arr[j]; arr[j]=t; } return arr; }
+  function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+  function hsKey(mode){ return "origoverborum_hs_"+mode; }
+  function getHS(mode){ try { var v=localStorage.getItem(hsKey(mode)); return v?parseInt(v,10):0; } catch(e){ return 0; } }
+  function setHS(mode,val){ try { localStorage.setItem(hsKey(mode), String(val)); } catch(e){} }
+
+  var OK_PHRASES = ["Perfecte!","Molt bé!","Exacte!","Bona feina!","Recte!"];
+  var BAD_PHRASES = ["Gairebé...","No és això.","Encara no."];
+
+  function genStrataQuestion(){
+    var w = rand(STRATA_WORDS);
+    var opts = shuffle(["substrat","superstrat","adstrat"]);
+    return {
+      family:"strata",
+      word: w.word,
+      sub2: "Aquest mot no prové del fons llatí patrimonial habitual.",
+      ask: "D'on prové?",
+      optKeys: opts,
+      optLabels: opts.map(function(k){ return STRATA_INFO[k].label; }),
+      answerKey: w.s,
+      explain: "\u00ab" + w.word + "\u00bb " + STRATA_INFO[w.s].note
+    };
+  }
+
+  function genDoubletQuestion(){
+    var d = rand(DOUBLETS);
+    var showPat = Math.random() < 0.5;
+    var shown = showPat ? d.pat : d.cult;
+    var answerKey = showPat ? "pat" : "cult";
+    var opts = shuffle(["pat","cult"]);
+    var explain = showPat
+      ? "\u00ab" + d.pat + "\u00bb és el mot patrimonial de " + d.etymon + ": ha evolucionat fonèticament de manera continuada des del llatí parlat. El seu doblet cultisme és \u00ab" + d.cult + "\u00bb, manllevat més tard directament del llatí escrit."
+      : "\u00ab" + d.cult + "\u00bb és el cultisme de " + d.etymon + ": es va incorporar directament del llatí per via culta, per això manté una forma molt pròxima a l'ètim. El seu doblet patrimonial és \u00ab" + d.pat + "\u00bb.";
+    return {
+      family:"doublets",
+      word: shown,
+      sub2: "etimologia: " + d.etymon,
+      ask: "És un mot patrimonial o un cultisme?",
+      optKeys: opts,
+      optLabels: opts.map(function(k){ return k==="pat" ? "Mot patrimonial" : "Cultisme"; }),
+      answerKey: answerKey,
+      explain: explain
+    };
+  }
+
+  function genQuestion(mode){
+    if (mode==="strata") return genStrataQuestion();
+    if (mode==="doublets") return genDoubletQuestion();
+    return genQuestion(rand(["strata","doublets"]));
+  }
+
+  function renderStatbar(){
+    statbar.style.display = "flex";
+    scoreVal.textContent = state.score;
+    streakVal.textContent = state.streak;
+    livesVal.textContent = "●".repeat(Math.max(state.lives,0)) + "○".repeat(Math.max(3-state.lives,0));
+  }
+
+  function startMode(mode){
+    state.mode = mode; state.score = 0; state.streak = 0; state.lives = 3; state.awaiting = false;
+    renderStatbar();
+    nextQuestion();
+    Array.prototype.forEach.call(modeNav.querySelectorAll("button"), function(b){ b.classList.toggle("active", b.dataset.mode===mode); });
+  }
+
+  function nextQuestion(){
+    state.current = genQuestion(state.mode);
+    state.awaiting = false;
+    renderQuestion();
+  }
+
+  function renderQuestion(){
+    var q = state.current;
+    var isThree = q.optKeys.length === 3;
+    var html = '<div class="question-card">';
+    html += '<p class="word display">' + escapeHtml(q.word) + '</p>';
+    html += '<p class="sub2">' + escapeHtml(q.sub2) + '</p>';
+    html += '<p class="ask">' + escapeHtml(q.ask) + '</p>';
+    html += '</div>';
+    html += '<div class="options-grid' + (isThree ? ' three' : '') + '" id="optionsGrid">';
+    q.optKeys.forEach(function(k, i){
+      html += '<button data-key="' + k + '">' + escapeHtml(q.optLabels[i]) + '</button>';
+    });
+    html += '</div>';
+    html += '<div class="feedback" id="feedback" aria-live="polite"></div>';
+    html += '<div class="explain" id="explainBox" style="display:none;"></div>';
+    html += '<div class="next-row" id="nextRow"></div>';
+    stage.innerHTML = html;
+
+    Array.prototype.forEach.call(document.getElementById("optionsGrid").querySelectorAll("button"), function(b){
+      b.addEventListener("click", function(){ submitChoice(b.dataset.key); });
+    });
+  }
+
+  function submitChoice(key){
+    if (state.awaiting) return;
+    state.awaiting = true;
+    var q = state.current;
+    var correct = key === q.answerKey;
+    var grid = document.getElementById("optionsGrid");
+    Array.prototype.forEach.call(grid.querySelectorAll("button"), function(b){
+      b.disabled = true;
+      if (b.dataset.key === q.answerKey) b.classList.add("correct");
+      else if (b.dataset.key === key && !correct) b.classList.add("wrong");
+    });
+
+    var fb = document.getElementById("feedback");
+    if (correct){
+      state.streak += 1;
+      state.score += 10 + Math.min(state.streak-1,5)*2;
+      fb.className = "feedback ok"; fb.textContent = rand(OK_PHRASES);
+    } else {
+      state.streak = 0; state.lives -= 1;
+      fb.className = "feedback bad"; fb.textContent = rand(BAD_PHRASES);
+    }
+    var explainBox = document.getElementById("explainBox");
+    explainBox.style.display = "block";
+    explainBox.textContent = q.explain;
+
+    renderStatbar();
+
+    var nextRow = document.getElementById("nextRow");
+    var btn = document.createElement("button");
+    btn.className = "next";
+    if (state.lives <= 0){
+      btn.textContent = "Veure resultat";
+      btn.addEventListener("click", showGameOver);
+    } else {
+      btn.textContent = "Següent pregunta";
+      btn.addEventListener("click", nextQuestion);
+    }
+    nextRow.appendChild(btn);
+    btn.focus();
+  }
+
+  function showGameOver(){
+    var high = getHS(state.mode);
+    if (state.score > high){ setHS(state.mode, state.score); high = state.score; }
+    var html = '<div class="gameover">';
+    html += '<h2 class="display">Finis</h2>';
+    html += '<p class="final-score">Puntuació final: <strong>' + state.score + '</strong></p>';
+    html += '<p class="high">Millor puntuació en aquesta modalitat: ' + high + '</p>';
+    html += '<button class="restart" id="restartBtn">Torna a jugar</button>';
+    html += '<button class="menu" id="menuBtn">Canvia de modalitat</button>';
+    html += '</div>';
+    stage.innerHTML = html;
+    document.getElementById("restartBtn").addEventListener("click", function(){ startMode(state.mode); });
+    document.getElementById("menuBtn").addEventListener("click", showIntro);
+  }
+
+  function showIntro(){
+    statbar.style.display = "none";
+    Array.prototype.forEach.call(modeNav.querySelectorAll("button"), function(b){ b.classList.remove("active"); });
+    stage.innerHTML = '<div class="intro-stage"><h2>Tria una modalitat per començar</h2>' +
+      '<p>Estrats treballa el substrat, el superstrat i l\'adstrat; Patrimonials i cultismes treballa els doblets lèxics. Consulta la Referència si primer vols repassar-ho.</p></div>';
+  }
+
+  function showReference(){
+    statbar.style.display = "none";
+    Array.prototype.forEach.call(modeNav.querySelectorAll("button"), function(b){ b.classList.toggle("active", b.dataset.mode==="reference"); });
+
+    var html = '';
+    html += '<div class="ref-block"><h3>Substrat</h3><p>Llengua parlada en un territori que acaba desapareixent davant una altra llengua (la que hi imposa un poble dominant), però que hi deixa una petjada lèxica i, de vegades, fonètica.</p><p class="ref-examples">Exemple: el substrat preromà (ibèric, basc) sobre el llatí que va originar el català — esquerra, conill, balma, tossal, barranc.</p></div>';
+    html += '<div class="ref-block"><h3>Superstrat</h3><p>Llengua d\'un poble conqueridor que s\'imposa políticament, però que acaba sent substituïda per la llengua dels dominats — tot i així, hi deixa vocabulari.</p><p class="ref-examples">Exemple: el superstrat germànic (visigots, francs) sobre el llatí vulgar — guerra, guant, blanc, blau, robar, bandera.</p></div>';
+    html += '<div class="ref-block"><h3>Adstrat</h3><p>Influència mútua i perllongada entre dues llengües veïnes que coexisteixen sense que cap substitueixi l\'altra.</p><p class="ref-examples">Exemple: l\'adstrat àrab sobre el català, fruit de segles de convivència — sucre, taronja, catifa, duana, xarop, arròs.</p></div>';
+    html += '<div class="ref-block"><h3>Mot patrimonial</h3><p>Paraula que ha evolucionat de manera continuada i oral des del llatí fins avui, seguint les lleis fonètiques regulars del català — per això sol patir més transformacions (pèrdua de síl·labes, sonorització de consonants...).</p></div>';
+    html += '<div class="ref-block"><h3>Cultisme</h3><p>Paraula manllevada directament del llatí (o del grec) en una època posterior, per via culta i escrita — no oral —, motiu pel qual conserva una forma molt més pròxima a l\'original.</p></div>';
+    html += '<div class="ref-block"><h3>Doblets</h3><p>Un mot patrimonial i un cultisme que provenen del mateix ètim llatí però que han seguit camins diferents.</p>';
+    html += '<table class="ref-table"><tr><th>Ètim llatí</th><th>Mot patrimonial</th><th>Cultisme</th></tr>';
+    DOUBLETS.forEach(function(d){
+      html += '<tr><td>' + d.etymon + '</td><td>' + d.pat + '</td><td>' + d.cult + '</td></tr>';
+    });
+    html += '</table></div>';
+
+    stage.innerHTML = html;
+  }
+
+  modeNav.addEventListener("click", function(e){
+    var btn = e.target.closest("button[data-mode]");
+    if (!btn) return;
+    var mode = btn.dataset.mode;
+    if (mode === "reference") showReference();
+    else startMode(mode);
+  });
+
+})();
+</script>
+</body>
+</html>

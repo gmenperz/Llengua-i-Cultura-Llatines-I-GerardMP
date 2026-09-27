@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Via Latina — declinació, conjugació i vocabulari</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus+SC&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    box-sizing: border-box;
+    --bg: #2E1B3D;
+    --bg-panel: #3B2350;
+    --bg-panel-2: #34204A;
+    --ink: #F3E8F0;
+    --ink-soft: #C9AACD;
+    --red: #E8C468;
+    --red-dark: #C9A23F;
+    --bronze: #D8AC4E;
+    --bronze-light: #E9C877;
+    --patina: #8CB49A;
+    --line: rgba(239,231,214,0.22);
+    --line-soft: rgba(239,231,214,0.12);
+    --shadow: rgba(0,0,0,0.55);
+    --ok: #8CB49A;
+    --bad: #D06B5C;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1A1420;
+      --bg-panel: #241C2C;
+      --bg-panel-2: #2C2236;
+      --ink: #EFE7D6;
+      --ink-soft: #C7B99E;
+      --red: #B47FC7;
+      --red-dark: #8F5DA3;
+      --bronze: #D8AC4E;
+      --bronze-light: #E9C877;
+      --patina: #8CB49A;
+      --line: rgba(239,231,214,0.22);
+      --line-soft: rgba(239,231,214,0.12);
+      --shadow: rgba(0,0,0,0.55);
+      --ok: #8CB49A;
+      --bad: #D06B5C;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1A1420;
+    --bg-panel: #241C2C;
+    --bg-panel-2: #2C2236;
+    --ink: #EFE7D6;
+    --ink-soft: #C7B99E;
+    --red: #B47FC7;
+    --red-dark: #8F5DA3;
+    --bronze: #D8AC4E;
+    --bronze-light: #E9C877;
+    --patina: #8CB49A;
+    --line: rgba(239,231,214,0.22);
+    --line-soft: rgba(239,231,214,0.12);
+    --shadow: rgba(0,0,0,0.55);
+    --ok: #8CB49A;
+    --bad: #D06B5C;
+  }
+
+  html, body {
+    height: 100%;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(43,33,24,0.05) 0%, transparent 45%),
+      radial-gradient(circle at 85% 75%, rgba(43,33,24,0.05) 0%, transparent 45%);
+    color: var(--ink);
+    font-family: 'EB Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 18px;
+    line-height: 1.5;
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 28px 16px 40px;
+  }
+  .display {
+    font-family: 'Marcellus SC', Georgia, serif;
+    letter-spacing: 0.04em;
+  }
+
+  .wrap {
+    width: 100%;
+    max-width: 720px;
+  }
+
+  header.top {
+    text-align: center;
+    margin-bottom: 22px;
+  }
+  header.top h1 {
+    font-size: clamp(28px, 6vw, 42px);
+    margin: 0 0 6px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  header.top .rule {
+    width: 120px;
+    height: 3px;
+    margin: 10px auto 14px;
+    background: linear-gradient(90deg, transparent, var(--bronze), transparent);
+  }
+  header.top p.sub {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 17px;
+    font-style: italic;
+  }
+
+  details.howto {
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+  }
+  details.howto summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--red);
+    list-style: none;
+  }
+  details.howto summary::-webkit-details-marker { display: none; }
+  details.howto summary::before {
+    content: '❧ ';
+  }
+  details.howto .content {
+    margin-top: 10px;
+    color: var(--ink-soft);
+    font-size: 16px;
+  }
+  details.howto .content ul { padding-left: 20px; margin: 8px 0; }
+
+  nav.modes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 18px;
+  }
+  nav.modes button {
+    font-family: 'Marcellus SC', serif;
+    font-size: 13px;
+    letter-spacing: 0.03em;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--bg-panel);
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: background .15s, color .15s, border-color .15s;
+  }
+  nav.modes button:hover { border-color: var(--bronze); color: var(--ink); }
+  nav.modes button:focus-visible { outline: 2px solid var(--bronze); outline-offset: 2px; }
+  nav.modes button.active {
+    background: var(--red);
+    border-color: var(--red);
+    color: #F4EEDF;
+  }
+
+  .panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 10px 24px -14px var(--shadow);
+    position: relative;
+  }
+  .panel::before, .panel::after {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--line);
+    opacity: 0.6;
+  }
+  .panel::before { top: 8px; left: 8px; border-right: none; border-bottom: none; }
+  .panel::after { bottom: 8px; right: 8px; border-left: none; border-top: none; }
+
+  .statbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Marcellus SC', serif;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .statbar .stat { display: flex; align-items: center; gap: 6px; }
+  .statbar .coins { letter-spacing: 3px; color: var(--bronze); font-size: 16px; }
+  .statbar .coins .spent { color: var(--line); }
+  .statbar .score-val { color: var(--red); font-weight: 700; }
+  .statbar .streak-val { color: var(--patina); font-weight: 700; }
+
+  .stage {
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .intro-stage {
+    text-align: center;
+    padding: 30px 10px;
+    color: var(--ink-soft);
+  }
+  .intro-stage h2 { font-family: 'Marcellus SC', serif; color: var(--ink); font-size: 20px; margin-bottom: 10px;}
+  .intro-stage button.start {
+    margin-top: 18px;
+    font-family: 'Marcellus SC', serif;
+    background: var(--red);
+    color: #F4EEDF;
+    border: none;
+    padding: 12px 26px;
+    border-radius: 8px;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+  }
+  .intro-stage button.start:hover { background: var(--red-dark); }
+
+  .question-card {
+    background: var(--bg-panel-2);
+    border: 1px solid var(--line-soft);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+  }
+  .question-card .word {
+    font-family: 'Marcellus SC', serif;
+    font-size: clamp(22px, 5vw, 30px);
+    color: var(--red);
+    margin: 0 0 6px;
+  }
+  .question-card .gloss {
+    color: var(--ink-soft);
+    font-style: italic;
+    margin: 0 0 14px;
+    font-size: 16px;
+  }
+  .question-card .ask {
+    font-size: 19px;
+    font-weight: 600;
+  }
+
+  .answer-area {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .text-input-row {
+    display: flex;
+    gap: 10px;
+  }
+  .text-input-row input[type="text"] {
+    flex: 1;
+    font-family: 'EB Garamond', serif;
+    font-size: 19px;
+    padding: 11px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--ink);
+  }
+  .text-input-row input[type="text"]:focus-visible {
+    outline: 2px solid var(--bronze);
+    outline-offset: 1px;
+  }
+  .text-input-row button.check {
+    font-family: 'Marcellus SC', serif;
+    font-size: 13px;
+    letter-spacing: 0.03em;
+    padding: 0 20px;
+    border-radius: 8px;
+    border: none;
+    background: var(--patina);
+    color: #F4EEDF;
+    cursor: pointer;
+  }
+  .text-input-row button.check:disabled { opacity: 0.5; cursor: default; }
+  .text-input-row button.check:hover:not(:disabled) { filter: brightness(1.08); }
+
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media (max-width: 480px) {
+    .options-grid { grid-template-columns: 1fr; }
+  }
+  .options-grid button {
+    font-family: 'EB Garamond', serif;
+    font-size: 17px;
+    padding: 13px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--ink);
+    cursor: pointer;
+    transition: transform .1s;
+  }
+  .options-grid button:hover:not(:disabled) { border-color: var(--bronze); }
+  .options-grid button:focus-visible { outline: 2px solid var(--bronze); }
+  .options-grid button.correct { background: var(--ok); border-color: var(--ok); color: #F4EEDF; }
+  .options-grid button.wrong { background: var(--bad); border-color: var(--bad); color: #F4EEDF; }
+  .options-grid button:disabled { cursor: default; }
+
+  .feedback {
+    min-height: 26px;
+    font-weight: 600;
+    font-size: 17px;
+    text-align: center;
+  }
+  .feedback.ok { color: var(--ok); }
+  .feedback.bad { color: var(--bad); }
+  .feedback .correct-form { color: var(--ink-soft); font-weight: 400; font-style: italic; display: block; font-size: 15px; margin-top: 4px;}
+
+  .next-row { display: flex; justify-content: center; }
+  button.next {
+    font-family: 'Marcellus SC', serif;
+    font-size: 13px;
+    letter-spacing: 0.03em;
+    padding: 10px 22px;
+    border-radius: 8px;
+    border: 1px solid var(--bronze);
+    background: transparent;
+    color: var(--bronze);
+    cursor: pointer;
+  }
+  button.next:hover { background: var(--bronze); color: var(--bg-panel); }
+
+  .gameover {
+    text-align: center;
+    padding: 20px 10px;
+  }
+  .gameover h2 {
+    font-family: 'Marcellus SC', serif;
+    color: var(--red);
+    font-size: 24px;
+    margin-bottom: 4px;
+  }
+  .gameover .final-score { font-size: 20px; margin: 12px 0 4px; }
+  .gameover .high { color: var(--ink-soft); font-size: 15px; margin-bottom: 18px; }
+  .gameover button.restart {
+    font-family: 'Marcellus SC', serif;
+    background: var(--red);
+    color: #F4EEDF;
+    border: none;
+    padding: 11px 24px;
+    border-radius: 8px;
+    font-size: 13px;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    margin-right: 8px;
+  }
+  .gameover button.tomenus {
+    font-family: 'Marcellus SC', serif;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+    padding: 11px 24px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  .ref-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0 22px;
+    font-size: 16px;
+  }
+  .ref-table caption {
+    font-family: 'Marcellus SC', serif;
+    font-size: 14px;
+    text-align: left;
+    color: var(--red);
+    margin-bottom: 8px;
+    letter-spacing: 0.02em;
+  }
+  .ref-table th, .ref-table td {
+    border: 1px solid var(--line-soft);
+    padding: 7px 10px;
+    text-align: left;
+  }
+  .ref-table th {
+    background: var(--bg-panel-2);
+    font-weight: 600;
+  }
+  .ref-scroll { overflow-x: auto; }
+  .ref-note { color: var(--ink-soft); font-size: 15px; margin: 4px 0 20px; }
+
+  footer.foot {
+    text-align: center;
+    margin-top: 22px;
+    color: var(--ink-soft);
+    font-size: 13px;
+    font-style: italic;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1 class="display">VIA LATINA</h1>
+    <div class="rule"></div>
+    <p class="sub">declinació · conjugació · vocabulari — primera declinació i present d'indicatiu actiu</p>
+  </header>
+
+  <details class="howto">
+    <summary>Com es juga</summary>
+    <div class="content">
+      <p>Tria un dels quatre camins de sota. En cada pregunta tens un mot llatí (o el seu significat) i has de completar la forma correcta.</p>
+      <ul>
+        <li><strong>Declinatio</strong>: et donen un nom de la primera declinació i un cas i nombre; escriu la forma correcta.</li>
+        <li><strong>Coniugatio</strong>: et donen un verb i una persona; escriu la forma correcta del present d'indicatiu actiu.</li>
+        <li><strong>Vocabularium</strong>: tria el significat correcte en català d'un mot llatí.</li>
+        <li><strong>Repte mixt</strong>: barreja les tres coses.</li>
+      </ul>
+      <p>Tens 3 vides. Cada resposta errònia et costa una vida; encadenar respostes correctes puja la ratxa i els punts. Consulta <strong>Referència</strong> si et cal repassar les taules abans de començar.</p>
+    </div>
+  </details>
+
+  <nav class="modes" id="modeNav">
+    <button data-mode="declension">Declinatio</button>
+    <button data-mode="conjugation">Coniugatio</button>
+    <button data-mode="vocab">Vocabularium</button>
+    <button data-mode="mixed">Repte mixt</button>
+    <button data-mode="reference">Referència</button>
+  </nav>
+
+  <section class="panel">
+    <div id="statbar" class="statbar" style="display:none;">
+      <div class="stat">Punts: <span class="score-val" id="scoreVal">0</span></div>
+      <div class="stat">Ratxa: <span class="streak-val" id="streakVal">0</span></div>
+      <div class="stat">Vides: <span class="coins" id="livesVal">●●●</span></div>
+    </div>
+
+    <div class="stage" id="stage">
+      <div class="intro-stage">
+        <h2>Tria un camí per començar</h2>
+        <p>Selecciona una modalitat de sobre — Declinatio, Coniugatio, Vocabularium o el Repte mixt — per iniciar la partida. O consulta la Referència si primer vols repassar les taules.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">Salve, discipule — que la fortuna t'acompanyi en el teu llatí.</footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- DATA ----------
+
+  var VOCAB = [
+    {lat:"rosa", cat:"rosa", g:"f"},
+    {lat:"puella", cat:"noia", g:"f"},
+    {lat:"terra", cat:"terra", g:"f"},
+    {lat:"aqua", cat:"aigua", g:"f"},
+    {lat:"vita", cat:"vida", g:"f"},
+    {lat:"via", cat:"camí", g:"f"},
+    {lat:"insula", cat:"illa", g:"f"},
+    {lat:"silva", cat:"bosc", g:"f"},
+    {lat:"patria", cat:"pàtria", g:"f"},
+    {lat:"femina", cat:"dona", g:"f"},
+    {lat:"fabula", cat:"història, faula", g:"f"},
+    {lat:"nauta", cat:"mariner", g:"m"},
+    {lat:"poeta", cat:"poeta", g:"m"},
+    {lat:"regina", cat:"reina", g:"f"},
+    {lat:"villa", cat:"casa de camp", g:"f"},
+    {lat:"epistula", cat:"carta", g:"f"},
+    {lat:"corona", cat:"corona", g:"f"},
+    {lat:"luna", cat:"lluna", g:"f"},
+    {lat:"stella", cat:"estrella", g:"f"},
+    {lat:"pecunia", cat:"diners", g:"f"},
+    {lat:"hora", cat:"hora", g:"f"},
+    {lat:"fortuna", cat:"fortuna, sort", g:"f"},
+    {lat:"ianua", cat:"porta", g:"f"},
+    {lat:"schola", cat:"escola", g:"f"},
+    {lat:"umbra", cat:"ombra", g:"f"},
+    {lat:"agricola", cat:"pagès", g:"m"},
+    {lat:"cura", cat:"preocupació, cura", g:"f"},
+    {lat:"gloria", cat:"glòria", g:"f"},
+    {lat:"memoria", cat:"memòria", g:"f"},
+    {lat:"natura", cat:"natura", g:"f"}
+  ];
+
+  var CASES = [
+    {key:"nom", label:"Nominatiu", sg:"a", pl:"ae"},
+    {key:"acc", label:"Acusatiu", sg:"am", pl:"as"},
+    {key:"gen", label:"Genitiu", sg:"ae", pl:"arum"},
+    {key:"dat", label:"Datiu", sg:"ae", pl:"is"},
+    {key:"abl", label:"Ablatiu", sg:"a", pl:"is"}
+  ];
+  var NUMBERS = [
+    {key:"sg", label:"singular"},
+    {key:"pl", label:"plural"}
+  ];
+
+  var PERSONS = ["1a persona singular","2a persona singular","3a persona singular","1a persona plural","2a persona plural","3a persona plural"];
+
+  // forms = [jo, tu, ell/ella, nosaltres, vosaltres, ells/elles] present indicatiu actiu
+  var VERBS = [
+    {inf:"amare", meaning:"estimar", conj:1, forms:["amo","amas","amat","amamus","amatis","amant"]},
+    {inf:"laudare", meaning:"lloar", conj:1, forms:["laudo","laudas","laudat","laudamus","laudatis","laudant"]},
+    {inf:"vocare", meaning:"cridar, anomenar", conj:1, forms:["voco","vocas","vocat","vocamus","vocatis","vocant"]},
+    {inf:"parare", meaning:"preparar", conj:1, forms:["paro","paras","parat","paramus","paratis","parant"]},
+    {inf:"portare", meaning:"portar", conj:1, forms:["porto","portas","portat","portamus","portatis","portant"]},
+    {inf:"narrare", meaning:"explicar", conj:1, forms:["narro","narras","narrat","narramus","narratis","narrant"]},
+    {inf:"ambulare", meaning:"caminar", conj:1, forms:["ambulo","ambulas","ambulat","ambulamus","ambulatis","ambulant"]},
+    {inf:"cantare", meaning:"cantar", conj:1, forms:["canto","cantas","cantat","cantamus","cantatis","cantant"]},
+
+    {inf:"habere", meaning:"tenir", conj:2, forms:["habeo","habes","habet","habemus","habetis","habent"]},
+    {inf:"videre", meaning:"veure", conj:2, forms:["video","vides","videt","videmus","videtis","vident"]},
+    {inf:"monere", meaning:"avisar", conj:2, forms:["moneo","mones","monet","monemus","monetis","monent"]},
+    {inf:"timere", meaning:"témer", conj:2, forms:["timeo","times","timet","timemus","timetis","timent"]},
+    {inf:"sedere", meaning:"seure", conj:2, forms:["sedeo","sedes","sedet","sedemus","sedetis","sedent"]},
+    {inf:"docere", meaning:"ensenyar", conj:2, forms:["doceo","doces","docet","docemus","docetis","docent"]},
+
+    {inf:"mittere", meaning:"enviar", conj:3, forms:["mitto","mittis","mittit","mittimus","mittitis","mittunt"]},
+    {inf:"legere", meaning:"llegir", conj:3, forms:["lego","legis","legit","legimus","legitis","legunt"]},
+    {inf:"dicere", meaning:"dir", conj:3, forms:["dico","dicis","dicit","dicimus","dicitis","dicunt"]},
+    {inf:"ducere", meaning:"guiar, portar", conj:3, forms:["duco","ducis","ducit","ducimus","ducitis","ducunt"]},
+    {inf:"scribere", meaning:"escriure", conj:3, forms:["scribo","scribis","scribit","scribimus","scribitis","scribunt"]},
+    {inf:"currere", meaning:"córrer", conj:3, forms:["curro","curris","currit","currimus","curritis","currunt"]},
+
+    {inf:"capere", meaning:"agafar", conj:"3io", forms:["capio","capis","capit","capimus","capitis","capiunt"]},
+    {inf:"facere", meaning:"fer", conj:"3io", forms:["facio","facis","facit","facimus","facitis","faciunt"]},
+    {inf:"iacere", meaning:"llançar", conj:"3io", forms:["iacio","iacis","iacit","iacimus","iacitis","iaciunt"]},
+
+    {inf:"audire", meaning:"escoltar", conj:4, forms:["audio","audis","audit","audimus","auditis","audiunt"]},
+    {inf:"venire", meaning:"venir", conj:4, forms:["venio","venis","venit","venimus","venitis","veniunt"]},
+    {inf:"dormire", meaning:"dormir", conj:4, forms:["dormio","dormis","dormit","dormimus","dormitis","dormiunt"]},
+    {inf:"aperire", meaning:"obrir", conj:4, forms:["aperio","aperis","aperit","aperimus","aperitis","aperiunt"]},
+
+    {inf:"esse", meaning:"ser, estar", conj:"irr", forms:["sum","es","est","sumus","estis","sunt"]}
+  ];
+
+  // ---------- STATE ----------
+
+  var state = {
+    mode: null,
+    score: 0,
+    streak: 0,
+    lives: 3,
+    awaiting: false,
+    current: null
+  };
+
+  var stage = document.getElementById("stage");
+  var statbar = document.getElementById("statbar");
+  var scoreVal = document.getElementById("scoreVal");
+  var streakVal = document.getElementById("streakVal");
+  var livesVal = document.getElementById("livesVal");
+  var modeNav = document.getElementById("modeNav");
+
+  function rand(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+  function shuffle(arr){
+    var a = arr.slice();
+    for (var i=a.length-1;i>0;i--){
+      var j = Math.floor(Math.random()*(i+1));
+      var t=a[i]; a[i]=a[j]; a[j]=t;
+    }
+    return a;
+  }
+  function normalize(s){
+    return String(s).trim().toLowerCase().replace(/\s+/g," ");
+  }
+
+  function highScoreKey(mode){ return "vialatina_highscore_" + mode; }
+  function getHighScore(mode){
+    try {
+      var v = window.localStorage.getItem(highScoreKey(mode));
+      return v ? parseInt(v,10) : 0;
+    } catch(e){ return 0; }
+  }
+  function setHighScore(mode, val){
+    try { window.localStorage.setItem(highScoreKey(mode), String(val)); } catch(e){}
+  }
+
+  // ---------- QUESTION GENERATORS ----------
+
+  function genDeclension(){
+    var word = rand(VOCAB);
+    var c = rand(CASES);
+    var n = rand(NUMBERS);
+    var stem = word.lat.slice(0,-1);
+    var ending = n.key === "sg" ? c.sg : c.pl;
+    return {
+      kind: "text",
+      family: "declension",
+      word: word.lat + ", " + stem + "ae",
+      gloss: "(" + word.g + ".) " + word.cat,
+      ask: c.label + " " + n.label,
+      answer: stem + ending
+    };
+  }
+
+  function genConjugation(){
+    var verb = rand(VERBS);
+    var idx = Math.floor(Math.random()*6);
+    return {
+      kind: "text",
+      family: "conjugation",
+      word: verb.forms[0] + ", " + verb.inf,
+      gloss: verb.meaning,
+      ask: PERSONS[idx],
+      answer: verb.forms[idx]
+    };
+  }
+
+  function genVocab(){
+    var word = rand(VOCAB);
+    var others = shuffle(VOCAB.filter(function(w){ return w.lat !== word.lat; })).slice(0,3);
+    var options = shuffle([word.cat].concat(others.map(function(w){ return w.cat; })));
+    return {
+      kind: "choice",
+      family: "vocab",
+      word: word.lat,
+      gloss: "(" + word.g + ".)",
+      ask: "Quin és el significat en català?",
+      options: options,
+      answer: word.cat
+    };
+  }
+
+  function genQuestion(mode){
+    if (mode === "declension") return genDeclension();
+    if (mode === "conjugation") return genConjugation();
+    if (mode === "vocab") return genVocab();
+    // mixed
+    var pick = rand(["declension","conjugation","vocab"]);
+    return genQuestion(pick);
+  }
+
+  // ---------- FEEDBACK PHRASES ----------
+  var OK_PHRASES = ["Perfecte!","Molt bé!","Exacte!","Bona feina!","Recte!","Optime!"];
+  var BAD_PHRASES = ["Gairebé...","No és això.","Encara no.","Erras — mira la resposta."];
+
+  // ---------- RENDER ----------
+
+  function renderStatbar(){
+    statbar.style.display = "flex";
+    scoreVal.textContent = state.score;
+    streakVal.textContent = state.streak;
+    var full = "●".repeat(Math.max(state.lives,0));
+    var empty = "○".repeat(Math.max(3-state.lives,0));
+    livesVal.textContent = full + empty;
+  }
+
+  function startMode(mode){
+    state.mode = mode;
+    state.score = 0;
+    state.streak = 0;
+    state.lives = 3;
+    state.awaiting = false;
+    renderStatbar();
+    nextQuestion();
+    Array.prototype.forEach.call(modeNav.querySelectorAll("button"), function(b){
+      b.classList.toggle("active", b.dataset.mode === mode);
+    });
+  }
+
+  function nextQuestion(){
+    state.current = genQuestion(state.mode);
+    state.awaiting = false;
+    renderQuestion();
+  }
+
+  function renderQuestion(){
+    var q = state.current;
+    var html = '';
+    html += '<div class="question-card">';
+    html += '<p class="word display">' + escapeHtml(q.word) + '</p>';
+    html += '<p class="gloss">' + escapeHtml(q.gloss) + '</p>';
+    html += '<p class="ask">' + escapeHtml(q.ask) + '</p>';
+    html += '</div>';
+    html += '<div class="answer-area">';
+
+    if (q.kind === "text"){
+      html += '<div class="text-input-row">';
+      html += '<input type="text" id="answerInput" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Escriu la teva resposta">';
+      html += '<button class="check" id="checkBtn">Comprova</button>';
+      html += '</div>';
+    } else {
+      html += '<div class="options-grid" id="optionsGrid">';
+      q.options.forEach(function(opt, i){
+        html += '<button data-opt="' + i + '">' + escapeHtml(opt) + '</button>';
+      });
+      html += '</div>';
+    }
+
+    html += '<div class="feedback" id="feedback" aria-live="polite"></div>';
+    html += '<div class="next-row" id="nextRow"></div>';
+    html += '</div>';
+
+    stage.innerHTML = html;
+
+    if (q.kind === "text"){
+      var input = document.getElementById("answerInput");
+      var btn = document.getElementById("checkBtn");
+      input.focus();
+      btn.addEventListener("click", function(){ submitText(input.value); });
+      input.addEventListener("keydown", function(e){
+        if (e.key === "Enter" && !state.awaiting) submitText(input.value);
+      });
+    } else {
+      var grid = document.getElementById("optionsGrid");
+      Array.prototype.forEach.call(grid.querySelectorAll("button"), function(b){
+        b.addEventListener("click", function(){
+          submitChoice(parseInt(b.dataset.opt,10));
+        });
+      });
+    }
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+    });
+  }
+
+  function submitText(value){
+    if (state.awaiting) return;
+    var q = state.current;
+    var correct = normalize(value) === normalize(q.answer);
+    finishAnswer(correct, q.answer);
+    document.getElementById("checkBtn").disabled = true;
+    document.getElementById("answerInput").disabled = true;
+  }
+
+  function submitChoice(idx){
+    if (state.awaiting) return;
+    var q = state.current;
+    var chosen = q.options[idx];
+    var correct = chosen === q.answer;
+    var grid = document.getElementById("optionsGrid");
+    Array.prototype.forEach.call(grid.querySelectorAll("button"), function(b, i){
+      b.disabled = true;
+      if (q.options[i] === q.answer) b.classList.add("correct");
+      else if (i === idx && !correct) b.classList.add("wrong");
+    });
+    finishAnswer(correct, q.answer);
+  }
+
+  function finishAnswer(correct, answer){
+    state.awaiting = true;
+    var fb = document.getElementById("feedback");
+    if (correct){
+      state.streak += 1;
+      state.score += 10 + Math.min(state.streak-1, 5) * 2;
+      fb.className = "feedback ok";
+      fb.innerHTML = rand(OK_PHRASES);
+    } else {
+      state.streak = 0;
+      state.lives -= 1;
+      fb.className = "feedback bad";
+      fb.innerHTML = rand(BAD_PHRASES) + '<span class="correct-form">Resposta correcta: ' + escapeHtml(answer) + '</span>';
+    }
+    renderStatbar();
+
+    var nextRow = document.getElementById("nextRow");
+    if (state.lives <= 0){
+      var btn = document.createElement("button");
+      btn.className = "next";
+      btn.textContent = "Veure resultat";
+      btn.addEventListener("click", showGameOver);
+      nextRow.appendChild(btn);
+    } else {
+      var nbtn = document.createElement("button");
+      nbtn.className = "next";
+      nbtn.textContent = "Següent pregunta";
+      nbtn.addEventListener("click", nextQuestion);
+      nextRow.appendChild(nbtn);
+      nbtn.focus();
+    }
+  }
+
+  function showGameOver(){
+    var high = getHighScore(state.mode);
+    if (state.score > high){
+      setHighScore(state.mode, state.score);
+      high = state.score;
+    }
+    var html = '<div class="gameover">';
+    html += '<h2 class="display">Finis</h2>';
+    html += '<p class="final-score">Puntuació final: <strong>' + state.score + '</strong></p>';
+    html += '<p class="high">Millor puntuació en aquesta modalitat: ' + high + '</p>';
+    html += '<button class="restart" id="restartBtn">Torna a jugar</button>';
+    html += '<button class="tomenus" id="menuBtn">Canvia de modalitat</button>';
+    html += '</div>';
+    stage.innerHTML = html;
+    document.getElementById("restartBtn").addEventListener("click", function(){ startMode(state.mode); });
+    document.getElementById("menuBtn").addEventListener("click", showIntro);
+  }
+
+  function showIntro(){
+    statbar.style.display = "none";
+    Array.prototype.forEach.call(modeNav.querySelectorAll("button"), function(b){
+      b.classList.remove("active");
+    });
+    stage.innerHTML = '<div class="intro-stage">' +
+      '<h2>Tria un camí per començar</h2>' +
+      '<p>Selecciona una modalitat de sobre — Declinatio, Coniugatio, Vocabularium o el Repte mixt — per iniciar la partida. O consulta la Referència si primer vols repassar les taules.</p>' +
+      '</div>';
+  }
+
+  function showReference(){
+    statbar.style.display = "none";
+    Array.prototype.forEach.call(modeNav.querySelectorAll("button"), function(b){
+      b.classList.toggle("active", b.dataset.mode === "reference");
+    });
+
+    var html = '<div class="ref-scroll">';
+    html += '<table class="ref-table"><caption>Primera declinació — rosa, rosae (f.)</caption>' +
+      '<tr><th></th><th>Singular</th><th>Plural</th></tr>' +
+      '<tr><td>Nominatiu</td><td>rosa</td><td>rosae</td></tr>' +
+      '<tr><td>Vocatiu</td><td>rosa</td><td>rosae</td></tr>' +
+      '<tr><td>Acusatiu</td><td>rosam</td><td>rosas</td></tr>' +
+      '<tr><td>Genitiu</td><td>rosae</td><td>rosarum</td></tr>' +
+      '<tr><td>Datiu</td><td>rosae</td><td>rosis</td></tr>' +
+      '<tr><td>Ablatiu</td><td>rosa</td><td>rosis</td></tr>' +
+      '</table>';
+    html += '<p class="ref-note">Gairebé tots els noms en -a de la primera declinació són femenins, excepte alguns que designen ofici o persona masculina: <em>agricola</em> (pagès), <em>nauta</em> (mariner), <em>poeta</em> (poeta) — es declinen igual, però concorden en masculí.</p>';
+    html += '<p class="ref-note">El vocatiu (el cas amb què t\'adreces directament a algú, com a "rosa, ets bonica!") coincideix sempre amb el nominatiu en la primera declinació, tant en singular com en plural — per això no sol donar problemes.</p>';
+
+    html += '<table class="ref-table"><caption>Present d\'indicatiu actiu — desinències personals</caption>' +
+      '<tr><th>Persona</th><th>1a conj. (amare)</th><th>2a conj. (habere)</th><th>3a conj. (mittere)</th><th>3a mixta (capere)</th><th>4a conj. (audire)</th></tr>' +
+      '<tr><td>jo</td><td>am‑o</td><td>habe‑o</td><td>mitt‑o</td><td>capi‑o</td><td>audi‑o</td></tr>' +
+      '<tr><td>tu</td><td>ama‑s</td><td>habe‑s</td><td>mitti‑s</td><td>capi‑s</td><td>audi‑s</td></tr>' +
+      '<tr><td>ell/ella</td><td>ama‑t</td><td>habe‑t</td><td>mitti‑t</td><td>capi‑t</td><td>audi‑t</td></tr>' +
+      '<tr><td>nosaltres</td><td>ama‑mus</td><td>habe‑mus</td><td>mitti‑mus</td><td>capi‑mus</td><td>audi‑mus</td></tr>' +
+      '<tr><td>vosaltres</td><td>ama‑tis</td><td>habe‑tis</td><td>mitti‑tis</td><td>capi‑tis</td><td>audi‑tis</td></tr>' +
+      '<tr><td>ells/elles</td><td>ama‑nt</td><td>habe‑nt</td><td>mitt‑unt</td><td>capi‑unt</td><td>audi‑unt</td></tr>' +
+      '</table>';
+    html += '<p class="ref-note">Fixa-t\'hi: la vocal temàtica (a / e / — / i / i) i la desinència personal (‑o/‑s/‑t/‑mus/‑tis/‑nt, amb ‑o i ‑unt com a variants habituals) es repeteixen a totes les conjugacions — això és el que fa reconeixible cada forma.</p>';
+    html += '</div>';
+
+    stage.innerHTML = html;
+  }
+
+  modeNav.addEventListener("click", function(e){
+    var btn = e.target.closest("button[data-mode]");
+    if (!btn) return;
+    var mode = btn.dataset.mode;
+    if (mode === "reference") showReference();
+    else startMode(mode);
+  });
+
+})();
+</script>
+</body>
+</html>

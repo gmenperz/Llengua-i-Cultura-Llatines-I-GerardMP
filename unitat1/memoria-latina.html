@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Memoria Latina — joc de parelles de vocabulari</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus+SC&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    box-sizing: border-box;
+    --bg: #2E1B3D; --bg-panel: #3B2350; --bg-panel-2: #34204A;
+    --ink: #F3E8F0; --ink-soft: #C9AACD;
+    --red: #E8C468; --red-dark: #C9A23F;
+    --bronze: #D8AC4E; --bronze-light: #E9C877; --patina: #8CB49A;
+    --line: rgba(239,231,214,0.22); --line-soft: rgba(239,231,214,0.12); --shadow: rgba(0,0,0,0.55);
+    --ok: #8CB49A; --bad: #D06B5C;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1A1420; --bg-panel: #241C2C; --bg-panel-2: #2C2236;
+      --ink: #EFE7D6; --ink-soft: #C7B99E;
+      --red: #B47FC7; --red-dark: #8F5DA3;
+      --bronze: #D8AC4E; --bronze-light: #E9C877; --patina: #8CB49A;
+      --line: rgba(239,231,214,0.22); --line-soft: rgba(239,231,214,0.12);
+      --shadow: rgba(0,0,0,0.55); --ok: #8CB49A; --bad: #D06B5C;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1A1420; --bg-panel: #241C2C; --bg-panel-2: #2C2236;
+    --ink: #EFE7D6; --ink-soft: #C7B99E;
+    --red: #B47FC7; --red-dark: #8F5DA3;
+    --bronze: #D8AC4E; --bronze-light: #E9C877; --patina: #8CB49A;
+    --line: rgba(239,231,214,0.22); --line-soft: rgba(239,231,214,0.12);
+    --shadow: rgba(0,0,0,0.55); --ok: #8CB49A; --bad: #D06B5C;
+  }
+  html, body { height: 100%; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg);
+    background-image: radial-gradient(circle at 15% 20%, rgba(43,33,24,0.05) 0%, transparent 45%),
+                       radial-gradient(circle at 85% 75%, rgba(43,33,24,0.05) 0%, transparent 45%);
+    color: var(--ink); font-family: 'EB Garamond', Georgia, serif; font-size: 18px; line-height: 1.5;
+    min-height: 100%; display: flex; justify-content: center; padding: 28px 16px 40px;
+  }
+  .display { font-family: 'Marcellus SC', Georgia, serif; letter-spacing: 0.04em; }
+  .wrap { width: 100%; max-width: 680px; }
+
+  header.top { text-align: center; margin-bottom: 20px; }
+  header.top h1 { font-size: clamp(26px, 6vw, 38px); margin: 0 0 6px; font-weight: 600; }
+  header.top .rule { width: 120px; height: 3px; margin: 10px auto 12px; background: linear-gradient(90deg, transparent, var(--bronze), transparent); }
+  header.top p.sub { margin: 0; color: var(--ink-soft); font-size: 16px; font-style: italic; }
+
+  .panel {
+    background: var(--bg-panel); border: 1px solid var(--line); border-radius: 14px;
+    padding: 22px; box-shadow: 0 10px 24px -14px var(--shadow); position: relative;
+  }
+  .panel::before, .panel::after { content:''; position:absolute; width:14px; height:14px; border:2px solid var(--line); opacity:.6; }
+  .panel::before { top:8px; left:8px; border-right:none; border-bottom:none; }
+  .panel::after { bottom:8px; right:8px; border-left:none; border-top:none; }
+
+  .setup { text-align: center; padding: 10px 6px; }
+  .setup h2 { font-family:'Marcellus SC', serif; font-size: 19px; margin-bottom: 8px; }
+  .setup p { color: var(--ink-soft); margin-bottom: 18px; }
+  .size-row { display:flex; gap: 10px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
+  .size-row button {
+    font-family:'Marcellus SC', serif; font-size: 13px; padding: 10px 18px; border-radius: 8px;
+    border: 1px solid var(--line); background: var(--bg-panel-2); color: var(--ink-soft); cursor: pointer;
+  }
+  .size-row button.sel { background: var(--red); border-color: var(--red); color: #F4EEDF; }
+  button.start {
+    font-family:'Marcellus SC', serif; background: var(--red); color: #F4EEDF; border: none;
+    padding: 12px 26px; border-radius: 8px; font-size: 14px; cursor: pointer;
+  }
+  button.start:hover { background: var(--red-dark); }
+
+  .statbar {
+    display:flex; justify-content: space-between; font-family:'Marcellus SC', serif; font-size: 13px;
+    color: var(--ink-soft); margin-bottom: 16px; flex-wrap: wrap; gap: 8px;
+  }
+  .statbar .val { color: var(--red); font-weight: 700; }
+
+  .grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+  }
+  @media (max-width: 480px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .card {
+    perspective: 800px; aspect-ratio: 3/4; cursor: pointer;
+  }
+  .card .inner {
+    position: relative; width: 100%; height: 100%; transition: transform .4s;
+    transform-style: preserve-3d;
+  }
+  .card.flipped .inner, .card.matched .inner { transform: rotateY(180deg); }
+  .card .face {
+    position: absolute; inset: 0; backface-visibility: hidden; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center; padding: 6px;
+    text-align: center; font-size: 13px; border: 1px solid var(--line);
+  }
+  .card .front {
+    background: var(--bg-panel-2); color: var(--bronze); font-family:'Marcellus SC', serif; font-size: 20px;
+  }
+  .card .back {
+    background: var(--bg); transform: rotateY(180deg); color: var(--ink); line-height: 1.2;
+  }
+  .card.matched .back { background: var(--ok); color: #F4EEDF; border-color: var(--ok); }
+  .card .back.lat { font-style: italic; color: var(--red); }
+  .card.matched .back.lat { color: #F4EEDF; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card .inner { transition: none; }
+    * { transition: none !important; }
+  }
+
+  .win-panel { text-align: center; padding: 20px 8px; }
+  .win-panel h2 { font-family:'Marcellus SC', serif; color: var(--red); font-size: 22px; margin-bottom: 6px; }
+  .win-panel .stats { color: var(--ink-soft); margin-bottom: 18px; }
+  .win-panel .best { color: var(--bronze); font-weight: 600; }
+  .win-panel button {
+    font-family:'Marcellus SC', serif; font-size: 13px; padding: 10px 20px; border-radius: 8px; cursor: pointer;
+    margin: 0 6px;
+  }
+  .win-panel button.again { background: var(--red); border: none; color: #F4EEDF; }
+  .win-panel button.menu { background: transparent; border: 1px solid var(--line); color: var(--ink-soft); }
+
+  footer.foot { text-align:center; margin-top: 20px; color: var(--ink-soft); font-size: 13px; font-style: italic; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1 class="display">MEMORIA LATINA</h1>
+    <div class="rule"></div>
+    <p class="sub">troba les parelles de mots llatins i el seu significat</p>
+  </header>
+  <section class="panel" id="panel"></section>
+  <footer class="foot">Vocabulari de la primera declinació</footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var VOCAB = [
+    {lat:"rosa", cat:"rosa"}, {lat:"puella", cat:"noia"}, {lat:"terra", cat:"terra"},
+    {lat:"aqua", cat:"aigua"}, {lat:"vita", cat:"vida"}, {lat:"via", cat:"camí"},
+    {lat:"insula", cat:"illa"}, {lat:"silva", cat:"bosc"}, {lat:"patria", cat:"pàtria"},
+    {lat:"femina", cat:"dona"}, {lat:"fabula", cat:"faula"}, {lat:"nauta", cat:"mariner"},
+    {lat:"poeta", cat:"poeta"}, {lat:"regina", cat:"reina"}, {lat:"villa", cat:"casa de camp"},
+    {lat:"epistula", cat:"carta"}, {lat:"corona", cat:"corona"}, {lat:"luna", cat:"lluna"},
+    {lat:"stella", cat:"estrella"}, {lat:"pecunia", cat:"diners"}, {lat:"hora", cat:"hora"},
+    {lat:"fortuna", cat:"fortuna, sort"}, {lat:"ianua", cat:"porta"}, {lat:"schola", cat:"escola"},
+    {lat:"umbra", cat:"ombra"}, {lat:"agricola", cat:"pagès"}, {lat:"cura", cat:"preocupació"},
+    {lat:"gloria", cat:"glòria"}, {lat:"memoria", cat:"memòria"}, {lat:"natura", cat:"natura"}
+  ];
+
+  var panel = document.getElementById("panel");
+  var state = { size: 8, cards: [], flipped: [], matches: 0, moves: 0, busy: false };
+
+  function shuffle(a){
+    var arr = a.slice();
+    for (var i=arr.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=arr[i]; arr[i]=arr[j]; arr[j]=t; }
+    return arr;
+  }
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; });
+  }
+  function hsKey(size){ return "memorialatina_best_" + size; }
+  function getBest(size){ try { var v = localStorage.getItem(hsKey(size)); return v ? parseInt(v,10) : null; } catch(e){ return null; } }
+  function setBest(size, moves){ try { localStorage.setItem(hsKey(size), String(moves)); } catch(e){} }
+
+  function renderSetup(){
+    var html = '<div class="setup">';
+    html += '<h2 class="display">Quantes parelles vols?</h2>';
+    html += '<p>Troba cada mot llatí amb el seu significat en català.</p>';
+    html += '<div class="size-row" id="sizeRow">';
+    [6,8,10].forEach(function(n){
+      html += '<button data-n="'+n+'" class="'+(n===state.size?'sel':'')+'">'+n+' parelles</button>';
+    });
+    html += '</div>';
+    html += '<button class="start" id="startBtn">Comença</button>';
+    html += '</div>';
+    panel.innerHTML = html;
+    Array.prototype.forEach.call(document.getElementById("sizeRow").querySelectorAll("button"), function(b){
+      b.addEventListener("click", function(){
+        state.size = parseInt(b.dataset.n,10);
+        renderSetup();
+      });
+    });
+    document.getElementById("startBtn").addEventListener("click", startGame);
+  }
+
+  function startGame(){
+    var chosen = shuffle(VOCAB).slice(0, state.size);
+    var deck = [];
+    chosen.forEach(function(w, i){
+      deck.push({ id: "l"+i, pairId: i, text: w.lat, type: "lat" });
+      deck.push({ id: "c"+i, pairId: i, text: w.cat, type: "cat" });
+    });
+    state.cards = shuffle(deck);
+    state.flipped = [];
+    state.matches = 0;
+    state.moves = 0;
+    state.busy = false;
+    renderGame();
+  }
+
+  function renderGame(){
+    var html = '<div class="statbar">';
+    html += '<div>Parelles: <span class="val">' + state.matches + ' / ' + state.size + '</span></div>';
+    html += '<div>Intents: <span class="val">' + state.moves + '</span></div>';
+    html += '</div>';
+    html += '<div class="grid" id="grid">';
+    state.cards.forEach(function(c, idx){
+      var flippedClass = (state.flipped.indexOf(idx) !== -1 || c.matched) ? "flipped" : "";
+      var matchedClass = c.matched ? "matched" : "";
+      html += '<div class="card ' + flippedClass + ' ' + matchedClass + '" data-idx="' + idx + '">';
+      html += '<div class="inner">';
+      html += '<div class="face front display">VL</div>';
+      html += '<div class="face back ' + (c.type==='lat'?'lat':'') + '">' + escapeHtml(c.text) + '</div>';
+      html += '</div></div>';
+    });
+    html += '</div>';
+    panel.innerHTML = html;
+    Array.prototype.forEach.call(document.getElementById("grid").querySelectorAll(".card"), function(el){
+      el.addEventListener("click", function(){ onCardClick(parseInt(el.dataset.idx,10)); });
+    });
+  }
+
+  function onCardClick(idx){
+    if (state.busy) return;
+    var c = state.cards[idx];
+    if (c.matched || state.flipped.indexOf(idx) !== -1) return;
+    if (state.flipped.length >= 2) return;
+
+    state.flipped.push(idx);
+    renderGame();
+
+    if (state.flipped.length === 2){
+      state.busy = true;
+      state.moves += 1;
+      var a = state.cards[state.flipped[0]], b = state.cards[state.flipped[1]];
+      if (a.pairId === b.pairId){
+        a.matched = true; b.matched = true;
+        state.matches += 1;
+        state.flipped = [];
+        state.busy = false;
+        renderGame();
+        if (state.matches === state.size){
+          setTimeout(showWin, 400);
+        }
+      } else {
+        setTimeout(function(){
+          state.flipped = [];
+          state.busy = false;
+          renderGame();
+        }, 850);
+      }
+    }
+  }
+
+  function showWin(){
+    var best = getBest(state.size);
+    var isNewBest = best === null || state.moves < best;
+    if (isNewBest) setBest(state.size, state.moves);
+    var html = '<div class="win-panel">';
+    html += '<h2 class="display">Optime!</h2>';
+    html += '<p class="stats">Has trobat les ' + state.size + ' parelles en <strong>' + state.moves + '</strong> intents.</p>';
+    html += '<p class="best">' + (isNewBest ? "Nou rècord per a " + state.size + " parelles!" : "Millor marca amb " + state.size + " parelles: " + best + " intents") + '</p>';
+    html += '<button class="again" id="againBtn">Juga una altra ronda</button>';
+    html += '<button class="menu" id="menuBtn">Canvia el nombre de parelles</button>';
+    html += '</div>';
+    panel.innerHTML = html;
+    document.getElementById("againBtn").addEventListener("click", startGame);
+    document.getElementById("menuBtn").addEventListener("click", renderSetup);
+  }
+
+  renderSetup();
+})();
+</script>
+</body>
+</html>

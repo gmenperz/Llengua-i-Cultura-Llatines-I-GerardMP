@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Syntaxis Latina — anàlisi i traducció</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus+SC&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    box-sizing: border-box;
+    --bg: #2E1B3D; --bg-panel: #3B2350; --bg-panel-2: #34204A;
+    --ink: #F3E8F0; --ink-soft: #C9AACD;
+    --red: #E8C468; --red-dark: #C9A23F;
+    --bronze: #D8AC4E; --bronze-light: #E9C877; --patina: #8CB49A;
+    --line: rgba(239,231,214,0.22); --line-soft: rgba(239,231,214,0.12); --shadow: rgba(0,0,0,0.55);
+    --ok: #8CB49A; --bad: #D06B5C;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1A1420; --bg-panel: #241C2C; --bg-panel-2: #2C2236;
+      --ink: #EFE7D6; --ink-soft: #C7B99E;
+      --red: #B47FC7; --red-dark: #8F5DA3;
+      --bronze: #D8AC4E; --bronze-light: #E9C877; --patina: #8CB49A;
+      --line: rgba(239,231,214,0.22); --line-soft: rgba(239,231,214,0.12);
+      --shadow: rgba(0,0,0,0.55); --ok: #8CB49A; --bad: #D06B5C;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1A1420; --bg-panel: #241C2C; --bg-panel-2: #2C2236;
+    --ink: #EFE7D6; --ink-soft: #C7B99E;
+    --red: #B47FC7; --red-dark: #8F5DA3;
+    --bronze: #D8AC4E; --bronze-light: #E9C877; --patina: #8CB49A;
+    --line: rgba(239,231,214,0.22); --line-soft: rgba(239,231,214,0.12);
+    --shadow: rgba(0,0,0,0.55); --ok: #8CB49A; --bad: #D06B5C;
+  }
+  html, body { height: 100%; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg);
+    background-image: radial-gradient(circle at 15% 20%, rgba(43,33,24,0.05) 0%, transparent 45%),
+                       radial-gradient(circle at 85% 75%, rgba(43,33,24,0.05) 0%, transparent 45%);
+    color: var(--ink); font-family: 'EB Garamond', Georgia, serif; font-size: 18px; line-height: 1.5;
+    min-height: 100%; display: flex; justify-content: center; padding: 28px 16px 40px;
+  }
+  .display { font-family: 'Marcellus SC', Georgia, serif; letter-spacing: 0.04em; }
+  .wrap { width: 100%; max-width: 740px; }
+
+  header.top { text-align: center; margin-bottom: 20px; }
+  header.top h1 { font-size: clamp(22px, 6vw, 34px); margin: 0 0 6px; font-weight: 600; }
+  header.top .rule { width: 120px; height: 3px; margin: 10px auto 12px; background: linear-gradient(90deg, transparent, var(--bronze), transparent); }
+  header.top p.sub { margin: 0; color: var(--ink-soft); font-size: 16px; font-style: italic; }
+
+  .panel {
+    background: var(--bg-panel); border: 1px solid var(--line); border-radius: 14px;
+    padding: 22px; box-shadow: 0 10px 24px -14px var(--shadow); position: relative;
+  }
+  .panel::before, .panel::after { content:''; position:absolute; width:14px; height:14px; border:2px solid var(--line); opacity:.6; }
+  .panel::before { top:8px; left:8px; border-right:none; border-bottom:none; }
+  .panel::after { bottom:8px; right:8px; border-left:none; border-top:none; }
+
+  .statbar {
+    display:flex; justify-content: space-between; align-items:center; font-family:'Marcellus SC', serif; font-size: 13px;
+    color: var(--ink-soft); margin-bottom: 16px; flex-wrap: wrap; gap: 8px;
+  }
+  .statbar .coins { letter-spacing:3px; color: var(--bronze); font-size:16px; }
+  .statbar .score-val { color: var(--red); font-weight: 700; }
+  .statbar .streak-val { color: var(--patina); font-weight: 700; }
+
+  .intro-stage { text-align:center; padding: 20px 6px; }
+  .intro-stage h2 { font-family:'Marcellus SC', serif; font-size: 19px; margin-bottom: 10px; }
+  .intro-stage p { color: var(--ink-soft); margin-bottom: 18px; }
+  button.start {
+    font-family:'Marcellus SC', serif; background: var(--red); color: #F8F1DC; border: none;
+    padding: 12px 26px; border-radius: 8px; font-size: 14px; cursor: pointer;
+  }
+  button.start:hover { background: var(--red-dark); }
+
+  .sentence-card {
+    background: var(--bg-panel-2); border: 1px solid var(--line-soft); border-radius: 10px;
+    padding: 22px 20px; text-align: center; margin-bottom: 18px;
+  }
+  .sentence-card .lat { font-family:'Marcellus SC', serif; font-size: clamp(19px, 4.4vw, 25px); line-height: 1.7; margin: 0; }
+  .sentence-card .lat span.hl { color: var(--red); text-decoration: underline; text-decoration-color: var(--bronze); text-underline-offset: 5px; }
+  .sentence-card .ask { margin-top: 14px; font-size: 17px; font-weight: 600; }
+
+  .options-grid { display:grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 480px) { .options-grid { grid-template-columns: 1fr; } }
+  .options-grid button {
+    font-family:'EB Garamond', serif; font-size: 16px; padding: 12px 12px; border-radius: 8px;
+    border: 1px solid var(--line); background: var(--bg); color: var(--ink); cursor: pointer;
+  }
+  .options-grid button:hover:not(:disabled) { border-color: var(--bronze); }
+  .options-grid button.correct { background: var(--ok); border-color: var(--ok); color: #F8F1DC; }
+  .options-grid button.wrong { background: var(--bad); border-color: var(--bad); color: #F8F1DC; }
+  .options-grid button:disabled { cursor: default; }
+
+  .feedback { min-height: 20px; font-weight: 600; font-size: 16px; text-align:center; margin-top: 14px; }
+  .feedback.ok { color: var(--ok); } .feedback.bad { color: var(--bad); }
+  .explain { margin-top: 8px; color: var(--ink-soft); font-size: 15px; font-style: italic; text-align:center; }
+
+  .translate-block {
+    margin-top: 22px; border-top: 1px dashed var(--line); padding-top: 18px; display: none;
+  }
+  .translate-block h3 { font-family:'Marcellus SC', serif; font-size: 14px; color: var(--red); margin: 0 0 10px; text-align:center; }
+  .translate-block textarea {
+    width: 100%; min-height: 70px; font-family:'EB Garamond', serif; font-size: 16px; padding: 10px 12px;
+    border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); resize: vertical;
+  }
+  .translate-row { display:flex; justify-content: center; margin-top: 10px; }
+  button.reveal {
+    font-family:'Marcellus SC', serif; font-size: 12.5px; padding: 9px 18px; border-radius: 8px;
+    border: 1px solid var(--bronze); background: transparent; color: var(--bronze); cursor: pointer;
+  }
+  button.reveal:hover { background: var(--bronze); color: var(--bg-panel); }
+  .model-translation {
+    margin-top: 12px; text-align: center; color: var(--ink); font-style: italic; display: none;
+    background: var(--bg-panel-2); border-radius: 8px; padding: 10px 14px;
+  }
+
+  .next-row { display:flex; justify-content:center; margin-top: 18px; }
+  button.next {
+    font-family:'Marcellus SC', serif; font-size: 13px; padding: 10px 22px; border-radius: 8px;
+    border: 1px solid var(--bronze); background: transparent; color: var(--bronze); cursor: pointer;
+  }
+  button.next:hover { background: var(--bronze); color: var(--bg-panel); }
+
+  .gameover { text-align:center; padding: 20px 8px; }
+  .gameover h2 { font-family:'Marcellus SC', serif; color: var(--red); font-size: 22px; margin-bottom: 6px; }
+  .gameover .final-score { font-size: 19px; margin: 10px 0 4px; }
+  .gameover .high { color: var(--ink-soft); font-size: 14px; margin-bottom: 16px; }
+  .gameover button { font-family:'Marcellus SC', serif; font-size: 13px; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin: 0 6px; }
+  .gameover button.restart { background: var(--red); border:none; color: #F8F1DC; }
+  .gameover button.menu { background: transparent; border: 1px solid var(--line); color: var(--ink-soft); }
+
+  footer.foot { text-align:center; margin-top: 20px; color: var(--ink-soft); font-size: 13px; font-style: italic; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1 class="display">SYNTAXIS LATINA</h1>
+    <div class="rule"></div>
+    <p class="sub">anàlisi morfosintàctica i traducció d'oracions</p>
+  </header>
+
+  <section class="panel">
+    <div id="statbar" class="statbar" style="display:none;">
+      <div>Punts: <span class="score-val" id="scoreVal">0</span></div>
+      <div>Ratxa: <span class="streak-val" id="streakVal">0</span></div>
+      <div>Vides: <span class="coins" id="livesVal">●●●</span></div>
+    </div>
+    <div id="stage">
+      <div class="intro-stage">
+        <h2 class="display">Com funciona</h2>
+        <p>Cada oració llatina té una paraula marcada. Digues quina funció sintàctica hi fa (a partir del cas en què està declinada). Després, tradueix tu mateix l'oració sencera i compara-la amb la traducció model — aquesta part no puntua, és per practicar.</p>
+        <button class="start" id="startBtn">Comença</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">Verba iungere, sensum invenire — uneix els mots, troba el sentit.</footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var SENTENCES = [
+    { latin: ["Puella","rosam","amat."], hl: 0, func: "SUBJ", gloss: "noia", trans: "La noia estima la rosa." },
+    { latin: ["Puella","rosam","amat."], hl: 1, func: "CD", gloss: "rosa", trans: "La noia estima la rosa." },
+    { latin: ["Agricola","aquam","portat."], hl: 0, func: "SUBJ", gloss: "pagès", trans: "El pagès porta l'aigua." },
+    { latin: ["Agricola","aquam","portat."], hl: 2, func: "V", gloss: "", trans: "El pagès porta l'aigua." },
+    { latin: ["Nauta","epistulam","feminae","mittit."], hl: 1, func: "CD", gloss: "carta", trans: "El mariner envia una carta a la dona." },
+    { latin: ["Nauta","epistulam","feminae","mittit."], hl: 2, func: "CI", gloss: "a la dona", trans: "El mariner envia una carta a la dona." },
+    { latin: ["Puellae","fabulam","narrant."], hl: 0, func: "SUBJ", gloss: "noies (pl.)", trans: "Les noies expliquen una història." },
+    { latin: ["Regina","coronam","gloriae","amat."], hl: 2, func: "CN", gloss: "de la glòria", trans: "La reina estima la corona de la glòria." },
+    { latin: ["Regina","coronam","gloriae","amat."], hl: 1, func: "CD", gloss: "corona", trans: "La reina estima la corona de la glòria." },
+    { latin: ["Poeta","stellas","silvae","videt."], hl: 1, func: "CD", gloss: "estrelles (pl.)", trans: "El poeta veu les estrelles del bosc." },
+    { latin: ["Poeta","stellas","silvae","videt."], hl: 2, func: "CN", gloss: "del bosc", trans: "El poeta veu les estrelles del bosc." },
+    { latin: ["Nautae","terram","patriae","amant."], hl: 0, func: "SUBJ", gloss: "mariners (pl.)", trans: "Els mariners estimen la terra de la pàtria." },
+    { latin: ["Nautae","terram","patriae","amant."], hl: 2, func: "CN", gloss: "de la pàtria", trans: "Els mariners estimen la terra de la pàtria." },
+    { latin: ["Femina","puellae","coronam","mittit."], hl: 1, func: "CI", gloss: "a la noia", trans: "La dona envia una corona a la noia." },
+    { latin: ["Poeta","patriam","cura","amat."], hl: 2, func: "CC", gloss: "amb cura, atentament", trans: "El poeta estima la pàtria amb cura." },
+    { latin: ["Poeta","patriam","cura","amat."], hl: 1, func: "CD", gloss: "pàtria", trans: "El poeta estima la pàtria amb cura." },
+    { latin: ["Agricolae","pecuniam","habent."], hl: 0, func: "SUBJ", gloss: "pagesos (pl.)", trans: "Els pagesos tenen diners." },
+    { latin: ["Puella","fabulam","poetae","audit."], hl: 2, func: "CN", gloss: "del poeta", trans: "La noia escolta la història del poeta." },
+    { latin: ["Puella","fabulam","poetae","audit."], hl: 3, func: "V", gloss: "", trans: "La noia escolta la història del poeta." },
+    { latin: ["Feminae","agricolam","timent."], hl: 1, func: "CD", gloss: "pagès", trans: "Les dones tenen por del pagès." },
+    { latin: ["Poeta","puellas","fabula","monet."], hl: 2, func: "CC", gloss: "amb una faula", trans: "El poeta avisa les noies amb una faula." },
+    { latin: ["Poeta","puellas","fabula","monet."], hl: 1, func: "CD", gloss: "noies (pl.)", trans: "El poeta avisa les noies amb una faula." },
+    { latin: ["Regina","feminis","coronas","mittit."], hl: 1, func: "CI", gloss: "a les dones", trans: "La reina envia corones a les dones." },
+    { latin: ["Regina","feminis","coronas","mittit."], hl: 2, func: "CD", gloss: "corones (pl.)", trans: "La reina envia corones a les dones." },
+    { latin: ["Puella","regina","est."], hl: 0, func: "SUBJ", gloss: "noia", trans: "La noia és reina." },
+    { latin: ["Puella","regina","est."], hl: 1, func: "ATR", gloss: "reina", trans: "La noia és reina." },
+    { latin: ["Puella","regina","est."], hl: 2, func: "V", gloss: "", trans: "La noia és reina." },
+    { latin: ["Roma","patria","est."], hl: 0, func: "SUBJ", gloss: "Roma", trans: "Roma és la pàtria." },
+    { latin: ["Roma","patria","est."], hl: 1, func: "ATR", gloss: "pàtria", trans: "Roma és la pàtria." },
+    { latin: ["Puellae","reginae","sunt."], hl: 0, func: "SUBJ", gloss: "noies (pl.)", trans: "Les noies són reines." },
+    { latin: ["Puellae","reginae","sunt."], hl: 1, func: "ATR", gloss: "reines (pl.)", trans: "Les noies són reines." },
+    { latin: ["Via","longa","est."], hl: 0, func: "SUBJ", gloss: "camí", trans: "El camí és llarg." },
+    { latin: ["Via","longa","est."], hl: 1, func: "ATR", gloss: "llarg", trans: "El camí és llarg." },
+    { latin: ["Fabula","pulchra","est."], hl: 0, func: "SUBJ", gloss: "història", trans: "La història és bella." },
+    { latin: ["Fabula","pulchra","est."], hl: 1, func: "ATR", gloss: "bella", trans: "La història és bella." },
+    { latin: ["Regina","bona","est."], hl: 1, func: "ATR", gloss: "bona", trans: "La reina és bona." },
+    { latin: ["Insulae","magnae","sunt."], hl: 0, func: "SUBJ", gloss: "illes (pl.)", trans: "Les illes són grans." },
+    { latin: ["Insulae","magnae","sunt."], hl: 1, func: "ATR", gloss: "grans (pl.)", trans: "Les illes són grans." }
+  ];
+
+  var FUNC_INFO = {
+    SUBJ: { label: "Subjecte", note: "va en nominatiu, el cas que marca qui fa l'acció (o de qui es predica alguna cosa)." },
+    CD: { label: "Complement Directe", note: "va en acusatiu, el cas del complement directe." },
+    CI: { label: "Complement Indirecte", note: "va en datiu, el cas del complement indirecte." },
+    CC: { label: "Complement Circumstancial", note: "va en ablatiu — aquí de manera. Compte: en la primera declinació, l'ablatiu singular té la mateixa forma que el nominatiu singular; només el context (i el significat) permet distingir-los." },
+    CN: { label: "Complement del Nom", note: "va en genitiu, el cas que expressa possessió o pertinença (\"de...\")." },
+    ATR: { label: "Atribut", note: "va en nominatiu, com el subjecte, perquè hi concorda: apareix amb el verb copulatiu \"sum\" (ser/estar), que no porta complement directe sinó un atribut que informa sobre el subjecte." },
+    V: { label: "Verb (nucli del predicat)", note: "és el verb de l'oració, el nucli del predicat." }
+  };
+  var FUNC_KEYS = ["SUBJ","CD","CI","CC","CN","ATR","V"];
+
+  var state = { score:0, streak:0, lives:3, awaiting:false, current:null };
+
+  var stage = document.getElementById("stage");
+  var statbar = document.getElementById("statbar");
+  var scoreVal = document.getElementById("scoreVal");
+  var streakVal = document.getElementById("streakVal");
+  var livesVal = document.getElementById("livesVal");
+
+  function rand(a){ return a[Math.floor(Math.random()*a.length)]; }
+  function shuffle(a){ var arr=a.slice(); for (var i=arr.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=arr[i]; arr[i]=arr[j]; arr[j]=t; } return arr; }
+  function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+  function hsKey(){ return "syntaxislatina_hs"; }
+  function getHS(){ try { var v=localStorage.getItem(hsKey()); return v?parseInt(v,10):0; } catch(e){ return 0; } }
+  function setHS(val){ try { localStorage.setItem(hsKey(), String(val)); } catch(e){} }
+
+  var OK_PHRASES = ["Perfecte!","Molt bé!","Exacte!","Bona feina!","Recte!"];
+  var BAD_PHRASES = ["Gairebé...","No és això.","Encara no."];
+
+  document.getElementById("startBtn").addEventListener("click", start);
+
+  function start(){
+    state.score = 0; state.streak = 0; state.lives = 3; state.awaiting = false;
+    statbar.style.display = "flex";
+    renderStat();
+    nextSentence();
+  }
+
+  function renderStat(){
+    scoreVal.textContent = state.score;
+    streakVal.textContent = state.streak;
+    livesVal.textContent = "●".repeat(Math.max(state.lives,0)) + "○".repeat(Math.max(3-state.lives,0));
+  }
+
+  function nextSentence(){
+    state.current = rand(SENTENCES);
+    state.awaiting = false;
+    render();
+  }
+
+  function render(){
+    var q = state.current;
+    var html = '<div class="sentence-card"><p class="lat display">';
+    q.latin.forEach(function(w, i){
+      if (i === q.hl) html += '<span class="hl">' + escapeHtml(w) + '</span> ';
+      else html += escapeHtml(w) + ' ';
+    });
+    html += '</p><p class="ask">Quina funció sintàctica fa el mot marcat?</p></div>';
+    html += '<div class="options-grid" id="optionsGrid">';
+    FUNC_KEYS.forEach(function(k){
+      html += '<button data-key="' + k + '">' + FUNC_INFO[k].label + '</button>';
+    });
+    html += '</div>';
+    html += '<div class="feedback" id="feedback" aria-live="polite"></div>';
+    html += '<div class="explain" id="explainBox" style="display:none;"></div>';
+
+    html += '<div class="translate-block" id="translateBlock">';
+    html += '<h3>Ara tradueix tu mateix l\'oració sencera</h3>';
+    html += '<textarea id="ownTranslation" placeholder="Escriu la teva traducció aquí..."></textarea>';
+    html += '<div class="translate-row"><button class="reveal" id="revealBtn">Mostra la traducció model</button></div>';
+    html += '<div class="model-translation" id="modelTranslation"></div>';
+    html += '</div>';
+
+    html += '<div class="next-row" id="nextRow"></div>';
+    stage.innerHTML = html;
+
+    Array.prototype.forEach.call(document.getElementById("optionsGrid").querySelectorAll("button"), function(b){
+      b.addEventListener("click", function(){ submitChoice(b.dataset.key); });
+    });
+  }
+
+  function submitChoice(key){
+    if (state.awaiting) return;
+    state.awaiting = true;
+    var q = state.current;
+    var correct = key === q.func;
+    var grid = document.getElementById("optionsGrid");
+    Array.prototype.forEach.call(grid.querySelectorAll("button"), function(b){
+      b.disabled = true;
+      if (b.dataset.key === q.func) b.classList.add("correct");
+      else if (b.dataset.key === key && !correct) b.classList.add("wrong");
+    });
+
+    var fb = document.getElementById("feedback");
+    if (correct){
+      state.streak += 1;
+      state.score += 10 + Math.min(state.streak-1,5)*2;
+      fb.className = "feedback ok"; fb.textContent = rand(OK_PHRASES);
+    } else {
+      state.streak = 0; state.lives -= 1;
+      fb.className = "feedback bad"; fb.textContent = rand(BAD_PHRASES);
+    }
+    var explainBox = document.getElementById("explainBox");
+    explainBox.style.display = "block";
+    var word = q.latin[q.hl].replace(/[.,]/g,"");
+    explainBox.textContent = "\u00ab" + word + "\u00bb és " + FUNC_INFO[q.func].label.toLowerCase() + ": " + FUNC_INFO[q.func].note;
+
+    renderStat();
+
+    document.getElementById("translateBlock").style.display = "block";
+    document.getElementById("revealBtn").addEventListener("click", function(){
+      var mt = document.getElementById("modelTranslation");
+      mt.style.display = "block";
+      mt.textContent = q.trans;
+      this.disabled = true;
+    });
+
+    var nextRow = document.getElementById("nextRow");
+    var btn = document.createElement("button");
+    btn.className = "next";
+    if (state.lives <= 0){
+      btn.textContent = "Veure resultat";
+      btn.addEventListener("click", showGameOver);
+    } else {
+      btn.textContent = "Oració següent";
+      btn.addEventListener("click", nextSentence);
+    }
+    nextRow.appendChild(btn);
+  }
+
+  function showGameOver(){
+    var high = getHS();
+    if (state.score > high){ setHS(state.score); high = state.score; }
+    var html = '<div class="gameover">';
+    html += '<h2 class="display">Finis</h2>';
+    html += '<p class="final-score">Puntuació final: <strong>' + state.score + '</strong></p>';
+    html += '<p class="high">Millor puntuació: ' + high + '</p>';
+    html += '<button class="restart" id="restartBtn">Torna a jugar</button>';
+    html += '</div>';
+    stage.innerHTML = html;
+    document.getElementById("restartBtn").addEventListener("click", start);
+  }
+
+})();
+</script>
+</body>
+</html>
